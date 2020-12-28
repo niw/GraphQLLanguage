@@ -1,0 +1,20 @@
+"""
+Example of object type definition.
+"""
+type Cat {
+    name: String!
+    meowing: Boolean
+}
+
+# Example of fragment
+fragment cat on Cat {
+    name
+    meowing
+}
+
+# Example of query
+query($name: String! = "maru", $cute: Boolean! = true) {
+    cats(name: $name) {
+        ... cat @include(if: $cute)
+    }
+}

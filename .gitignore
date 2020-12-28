@@ -4,7 +4,9 @@
 .antlr/
 .idea/
 xcuserdata/
+project.xcworkspace/
 /*.xcodeproj
 /.build
+/.swiftpm
 /Vendor/antlr4-graphql-grammar
 /antlr4.jar
