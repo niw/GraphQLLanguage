@@ -1,0 +1,10 @@
+*.interp
+*.tokens
+.DS_Store
+.antlr/
+.idea/
+xcuserdata/
+/*.xcodeproj
+/.build
+/Vendor/antlr4-graphql-grammar
+/antlr4.jar
