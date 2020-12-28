@@ -27,7 +27,7 @@ let package = Package(
         .target(
             name: "GraphQLLanguage",
             dependencies: [
-                .product(name: "Antlr4", package: "Antlr4")
+                .product(name: "Antlr4-Auto", package: "Antlr4")
             ],
             exclude: [
                 "Generated/GraphQL.interp",

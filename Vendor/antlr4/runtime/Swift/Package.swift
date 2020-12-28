@@ -9,6 +9,9 @@ let package = Package(
     name: "Antlr4",
     products: [
         .library(
+            name: "Antlr4-Auto",
+            targets: ["Antlr4"]),
+        .library(
             name: "Antlr4",
             type: .dynamic,
             targets: ["Antlr4"]),
