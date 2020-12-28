@@ -3,6 +3,8 @@ GraphQL Language
 
 A simple GraphQL language parser library for Swift.
 
+![GraphQL Language](Resources/GraphQLLanguage.png)
+
 This library provides a plain Swift representation of GraphQL language
 implemented by using [ANTLR4 GraphQL Grammar](https://github.com/niw/antlr4-graphql-grammar),
 that is a language independent implementation of ANTLR4 grammar for GraphQL language.
