@@ -32,7 +32,7 @@ enum BuilderError: Error, CustomDebugStringConvertible {
     }
 }
 
-extension Optional {
+private extension Optional {
     func unwrap() throws -> Wrapped {
         switch self {
         case .none:
