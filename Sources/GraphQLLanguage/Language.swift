@@ -9,7 +9,7 @@
 // Ordered in the same way as `GraphQL.g4` grammar.
 
 public struct Document {
-    var definitions: [Definition]
+    public var definitions: [Definition]
 }
 
 // See `ExecutableDefinition`, `TypeSystemDefinition`, and `TypeSystemExtension`.
@@ -24,11 +24,11 @@ extension FragmentDefinition: ExecutableDefinition {
 }
 
 public struct OperationDefinition {
-    var operationType: OperationType
-    var name: String?
-    var variableDefinitions: [VariableDefinition]?
-    var directives: [Directive]?
-    var selectionSet: [Selection]
+    public var operationType: OperationType
+    public var name: String?
+    public var variableDefinitions: [VariableDefinition]?
+    public var directives: [Directive]?
+    public var selectionSet: [Selection]
 }
 
 public enum OperationType: String {
@@ -49,32 +49,32 @@ extension InlineFragment: Selection {
 }
 
 public struct Field {
-    var alias: String?
-    var name: String
-    var arguments: [Argument]?
-    var directives: [Directive]?
-    var selectionSet: [Selection]?
+    public var alias: String?
+    public var name: String
+    public var arguments: [Argument]?
+    public var directives: [Directive]?
+    public var selectionSet: [Selection]?
 }
 
 // public struct Arguments = [Argument]
 
 public struct Argument {
-    var name: String
-    var value: Value
+    public var name: String
+    public var value: Value
 }
 
-// public struct Alias // Unused
+// public struct Alias // Not used
 
 public struct FragmentSpread {
-    var fragmentName: String
-    var directives: [Directive]?
+    public var fragmentName: String
+    public var directives: [Directive]?
 }
 
 public struct FragmentDefinition {
-    var fragmentName: String
-    var typeCondition: NamedType
-    var directives: [Directive]?
-    var selectionSet: [Selection]
+    public var fragmentName: String
+    public var typeCondition: NamedType
+    public var directives: [Directive]?
+    public var selectionSet: [Selection]
 }
 
 // public struct FragmentName = String
@@ -82,9 +82,9 @@ public struct FragmentDefinition {
 // public struct TypeCondition = NamedType
 
 public struct InlineFragment {
-    var typeCondition: NamedType?
-    var directives: [Directive]?
-    var selectionSet: [Selection]
+    public var typeCondition: NamedType?
+    public var directives: [Directive]?
+    public var selectionSet: [Selection]
 }
 
 public protocol Value {
@@ -110,49 +110,49 @@ extension ObjectValue: Value {
 
 public struct IntValue {
     // GraphQL `Int` is a signed 32‐bit integer.
-    var intValue: Int32
+    public var intValue: Int32
 }
 
 public struct FloatValue {
     // GraphQL `Float` is a signed double‐precision.
-    var floatValue: Double
+    public var floatValue: Double
 }
 
 public struct BooleanValue {
-    var booleanValue: Bool
+    public var booleanValue: Bool
 }
 
 public struct StringValue {
-    var stringValue: String
+    public var stringValue: String
 }
 
 public struct NullValue {
 }
 
 public struct EnumValue {
-    var enumValue: String
+    public var enumValue: String
 }
 
 public struct ListValue {
-    var values: [Value]
+    public var values: [Value]
 }
 
 public struct ObjectValue {
-    var objectFields: [String: Value]
+    public var objectFields: [String: Value]
 }
 
-// public struct ObjectField // Ununsed
+// public struct ObjectField // Not used
 
 public struct Variable {
-    var name: String
+    public var name: String
 }
 
 // public struct VariableDefinitions
 
 public struct VariableDefinition {
-    var variable: Variable
-    var typeReference: TypeReference
-    var defaultValue: Value?
+    public var variable: Variable
+    public var typeReference: TypeReference
+    public var defaultValue: Value?
 }
 
 // public struct DefaultValue = Value
@@ -167,11 +167,11 @@ extension NonNullType: TypeReference {
 }
 
 public struct NamedType {
-    var name: String
+    public var name: String
 }
 
 public struct ListType {
-    var typeReference: TypeReference
+    public var typeReference: TypeReference
 }
 
 // TODO: Consider to use alternative expression
@@ -183,8 +183,8 @@ public enum NonNullType {
 // public struct Directives = [Directive]
 
 public struct Directive {
-    var name: String
-    var arguments: [Argument]?
+    public var name: String
+    public var arguments: [Argument]?
 }
 
 // See `TypeDefinition`
@@ -202,27 +202,27 @@ extension SchemaExtension: TypeSystemExtension {
 }
 
 public struct SchemaDefinition {
-    var directives: [Directive]?
-    var rootOperationTypeDefinitions: [RootOperationTypeDefinition]?
+    public var directives: [Directive]?
+    public var rootOperationTypeDefinitions: [RootOperationTypeDefinition]?
 }
 
 public struct RootOperationTypeDefinition {
-    var operationType: OperationType
-    var namedType: NamedType
+    public var operationType: OperationType
+    public var namedType: NamedType
 }
 
 public struct SchemaExtension {
-    var directives: [Directive]?
-    var operationTypeDefinitions: [OperationTypeDefinition]?
+    public var directives: [Directive]?
+    public var operationTypeDefinitions: [OperationTypeDefinition]?
 }
 
 public struct OperationTypeDefinition {
-    var operationType: OperationType
-    var namedType: NamedType
+    public var operationType: OperationType
+    public var namedType: NamedType
 }
 
 public struct Description {
-    var stringValue: StringValue
+    public var stringValue: StringValue
 }
 
 public protocol TypeDefinition: TypeSystemDefinition {
@@ -256,22 +256,22 @@ extension InputObjectTypeExtension: TypeExtension {
 }
 
 public struct ScalarTypeDefinition {
-    var description: Description?
-    var name: String
-    var directives: [Directive]?
+    public var description: Description?
+    public var name: String
+    public var directives: [Directive]?
 }
 
 public struct ScalarTypeExtension {
-    var name: String
-    var directives: [Directive]
+    public var name: String
+    public var directives: [Directive]
 }
 
 public struct ObjectTypeDefinition {
-    var description: Description?
-    var name: String
-    var implementsInterfaces: [NamedType]?
-    var directives: [Directive]?
-    var fieldsDefinition: [FieldDefinition]?
+    public var description: Description?
+    public var name: String
+    public var implementsInterfaces: [NamedType]?
+    public var directives: [Directive]?
+    public var fieldsDefinition: [FieldDefinition]?
 }
 
 // public struct ImplementsInterfaces = [NamedType]
@@ -279,99 +279,99 @@ public struct ObjectTypeDefinition {
 // public struct FieldsDefinition = [FieldDefinition]
 
 public struct FieldDefinition {
-    var description: Description?
-    var name: String
-    var argumentsDefinition: [InputValueDefinition]?
-    var typeReference: TypeReference
-    var directives: [Directive]?
+    public var description: Description?
+    public var name: String
+    public var argumentsDefinition: [InputValueDefinition]?
+    public var typeReference: TypeReference
+    public var directives: [Directive]?
 }
 
 // public struct ArgumentsDefinition = [InputValueDefinition]
 
 public struct InputValueDefinition {
-    var description: Description?
-    var name: String
-    var typeReference: TypeReference
-    var defaultValue: Value?
-    var directives: [Directive]?
+    public var description: Description?
+    public var name: String
+    public var typeReference: TypeReference
+    public var defaultValue: Value?
+    public var directives: [Directive]?
 }
 
 public struct ObjectTypeExtension {
-    var name: String
-    var implementsInterfaces: [NamedType]?
-    var directives: [Directive]?
-    var fieldsDefinition: [FieldDefinition]?
+    public var name: String
+    public var implementsInterfaces: [NamedType]?
+    public var directives: [Directive]?
+    public var fieldsDefinition: [FieldDefinition]?
 }
 
 public struct InterfaceTypeDefinition {
-    var description: Description?
-    var name: String
-    var directives: [Directive]?
-    var fieldsDefinition: [FieldDefinition]?
+    public var description: Description?
+    public var name: String
+    public var directives: [Directive]?
+    public var fieldsDefinition: [FieldDefinition]?
 }
 
 public struct InterfaceTypeExtension {
-    var name: String
-    var directives: [Directive]?
-    var fieldsDefinition: [FieldDefinition]?
+    public var name: String
+    public var directives: [Directive]?
+    public var fieldsDefinition: [FieldDefinition]?
 }
 
 public struct UnionTypeDefinition {
-    var description: Description?
-    var name: String
-    var directives: [Directive]?
-    var unionMemberTypes: [NamedType]?
+    public var description: Description?
+    public var name: String
+    public var directives: [Directive]?
+    public var unionMemberTypes: [NamedType]?
 }
 
 // public struct UnionMemberTypes = [NamedType]
 
 public struct UnionTypeExtension {
-    var name: String
-    var directives: [Directive]?
-    var unionMemberTypes: [NamedType]?
+    public var name: String
+    public var directives: [Directive]?
+    public var unionMemberTypes: [NamedType]?
 }
 
 public struct EnumTypeDefinition {
-    var description: Description?
-    var name: String
-    var directives: [Directive]?
-    var enumValuesDefinition: [EnumValueDefinition]?
+    public var description: Description?
+    public var name: String
+    public var directives: [Directive]?
+    public var enumValuesDefinition: [EnumValueDefinition]?
 }
 
 // public struct  EnumValuesDefinition = [EnumValueDefinition]
 
 public struct EnumValueDefinition {
-    var description: Description?
-    var enumValue: EnumValue
-    var directives: [Directive]?
+    public var description: Description?
+    public var enumValue: EnumValue
+    public var directives: [Directive]?
 }
 
 public struct EnumTypeExtension {
-    var name: String
-    var directives: [Directive]?
-    var enumValuesDefinition: [EnumValueDefinition]?
+    public var name: String
+    public var directives: [Directive]?
+    public var enumValuesDefinition: [EnumValueDefinition]?
 }
 
 public struct InputObjectTypeDefinition {
-    var description: Description?
-    var name: String
-    var directives: [Directive]?
-    var inputFieldsDefinition: [InputValueDefinition]?
+    public var description: Description?
+    public var name: String
+    public var directives: [Directive]?
+    public var inputFieldsDefinition: [InputValueDefinition]?
 }
 
 // public struct InputFieldsDefinition = [InputValueDefinition]
 
 public struct InputObjectTypeExtension {
-    var name: String
-    var directives: [Directive]?
-    var inputFieldsDefinition: [InputValueDefinition]?
+    public var name: String
+    public var directives: [Directive]?
+    public var inputFieldsDefinition: [InputValueDefinition]?
 }
 
 public struct DirectiveDefinition {
-    var description: Description?
-    var name: String
-    var argumentsDefinition: [InputValueDefinition]?
-    var directiveLocations: [DirectiveLocation]
+    public var description: Description?
+    public var name: String
+    public var argumentsDefinition: [InputValueDefinition]?
+    public var directiveLocations: [DirectiveLocation]
 }
 
 // public struct DirectiveLocations = [DirectiveLocation]
