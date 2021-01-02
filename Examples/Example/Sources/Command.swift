@@ -15,7 +15,7 @@ struct Command: ParsableCommand {
     var file: String
 
     mutating func run() throws {
-        let source = try Source(filePath: file)
+        let source = try Source(atPath: file)
         let document = try Document.parsing(source)
         print(document)
     }

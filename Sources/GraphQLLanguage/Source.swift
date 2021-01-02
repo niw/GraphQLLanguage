@@ -15,9 +15,9 @@ public struct Source {
         self.string = string
     }
 
-    public init(filePath: String, encoding: String.Encoding = .utf8) throws {
-        name = filePath
-        string = try String(contentsOfFile: filePath, encoding: encoding)
+    public init(atPath path: String, encoding: String.Encoding = .utf8) throws {
+        name = path
+        string = try String(contentsOfFile: path, encoding: encoding)
     }
 
     func inputStream() -> ANTLRInputStream {
