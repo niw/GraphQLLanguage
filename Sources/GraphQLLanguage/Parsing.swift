@@ -14,7 +14,7 @@ private class BailErrorGraphQLLexer: GraphQLLexer {
 }
 
 extension GraphQLParser {
-    convenience init(inputStream: ANTLRInputStream) throws {
+    convenience init(_ inputStream: ANTLRInputStream) throws {
         let lexer = BailErrorGraphQLLexer(inputStream)
         let tokens = CommonTokenStream(lexer)
 
@@ -26,13 +26,15 @@ extension GraphQLParser {
     }
 }
 
+struct ParseBuildContext: BuildContext {
+    var source: Source
+    var parser: GraphQLParser
+}
+
 extension Document {
     public static func parsing(_ source: Source) throws -> Self {
-        // The lifetime of `inputStream` must be longer than `build()` call here or
-        // any calls that reads characters such as `getText()` may fail.
-        let inputStream = source.inputStream()
-        // TODO: Catch error and encapsulate it to improve error description
-        let context = try GraphQLParser(inputStream: inputStream).document()
-        return try context.build()
+        let parser = try GraphQLParser(source.inputStream())
+        let document = try parser.document()
+        return try document.build(with: ParseBuildContext(source: source, parser: parser))
     }
 }

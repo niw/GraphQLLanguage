@@ -8,8 +8,6 @@
 import Antlr4
 import Foundation
 
-// GraphQLParser extension to build Language Definitions
-
 enum BuilderError: Error, CustomDebugStringConvertible {
     case unwrap
     case unexpectedContext(_ context: ParserRuleContext)
@@ -43,70 +41,83 @@ private extension Optional {
     }
 }
 
+protocol BuildContext {
+}
+
 protocol Builder {
     associatedtype LanguageType
 
-    func build() throws -> LanguageType
+    func build(with buildContext: BuildContext) throws -> LanguageType
 }
 
-extension GraphQLParser.DocumentContext: Builder {
-    typealias LanguageType = Document
+private struct NullBuildContext: BuildContext {
+}
 
+private let nullBuildContext = NullBuildContext()
+
+extension Builder {
     func build() throws -> LanguageType {
+        try build(with: nullBuildContext)
+    }
+}
+
+struct BuildLanguageContext: LanguageContext {
+    var buildContext: BuildContext
+    var parserRuleContext: ParserRuleContext
+}
+
+// MARK: -
+
+extension GraphQLParser.DocumentContext: Builder {
+    func build(with buildContext: BuildContext) throws -> Document {
         let definitions = try definition().map { definition in
-            try definition.build()
+            try definition.build(with: buildContext)
         }
-        return Document(definitions: definitions)
+        return Document(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                        definitions: definitions)
     }
 }
 
 extension GraphQLParser.DefinitionContext: Builder {
-    typealias LanguageType = Definition
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> Definition {
         if let context = executableDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = typeSystemDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = typeSystemExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.ExecutableDefinitionContext: Builder {
-    typealias LanguageType = ExecutableDefinition
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> ExecutableDefinition {
         if let context = operationDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = fragmentDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.OperationDefinitionContext: Builder {
-    typealias LanguageType = OperationDefinition
-
-    func build() throws -> LanguageType {
-        OperationDefinition(operationType: try operationType().unwrap().build(),
-                            name: try name()?.build(),
-                            variableDefinitions: try variableDefinitions()?.build(),
-                            directives: try directives()?.build(),
-                            selectionSet: try selectionSet().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> OperationDefinition {
+        OperationDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                            operationType: try operationType().unwrap().build(with: buildContext),
+                            name: try name()?.build(with: buildContext),
+                            variableDefinitions: try variableDefinitions()?.build(with: buildContext),
+                            directives: try directives()?.build(with: buildContext),
+                            selectionSet: try selectionSet().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.OperationTypeContext: Builder {
-    typealias LanguageType = OperationType
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> OperationType {
         if QUERY() != nil {
             return .query
         }
@@ -121,197 +132,174 @@ extension GraphQLParser.OperationTypeContext: Builder {
 }
 
 extension GraphQLParser.SelectionSetContext: Builder {
-    typealias LanguageType = [Selection]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [Selection] {
         try selection().map { selection in
-            try selection.build()
+            try selection.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.SelectionContext: Builder {
-    typealias LanguageType = Selection
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> Selection {
         if let context = field() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = fragmentSpread() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = inlineFragment() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.FieldContext: Builder {
-    typealias LanguageType = Field
-
-    func build() throws -> LanguageType {
-        Field(alias: try alias()?.build(),
-              name: try name().unwrap().build(),
-              arguments: try arguments()?.build(),
-              directives: try directives()?.build(),
-              selectionSet: try selectionSet()?.build())
+    func build(with buildContext: BuildContext) throws -> Field {
+        Field(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+              alias: try alias()?.build(with: buildContext),
+              name: try name().unwrap().build(with: buildContext),
+              arguments: try arguments()?.build(with: buildContext),
+              directives: try directives()?.build(with: buildContext),
+              selectionSet: try selectionSet()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ArgumentsContext: Builder {
-    typealias LanguageType = [Argument]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [Argument] {
         try argument().map { argument in
-            try argument.build()
+            try argument.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.ArgumentContext: Builder {
-    typealias LanguageType = Argument
-
-    func build() throws -> LanguageType {
-        Argument(name: try name().unwrap().build(),
-                 value: try value().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> Argument {
+        Argument(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                 name: try name().unwrap().build(with: buildContext),
+                 value: try value().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.AliasContext: Builder {
-    typealias LanguageType = String
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> String {
         getText()
     }
 }
 
 extension GraphQLParser.FragmentSpreadContext: Builder {
-    typealias LanguageType = FragmentSpread
-
-    func build() throws -> LanguageType {
-        FragmentSpread(fragmentName: try fragmentName().unwrap().build(),
-                       directives: try directives()?.build())
+    func build(with buildContext: BuildContext) throws -> FragmentSpread {
+        FragmentSpread(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                       fragmentName: try fragmentName().unwrap().build(with: buildContext),
+                       directives: try directives()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.FragmentDefinitionContext: Builder {
-    typealias LanguageType = FragmentDefinition
-
-    func build() throws -> LanguageType {
-        FragmentDefinition(fragmentName: try fragmentName().unwrap().build(),
-                           typeCondition: try typeCondition().unwrap().build(),
-                           directives: try directives()?.build(),
-                           selectionSet: try selectionSet().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> FragmentDefinition {
+        FragmentDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                           fragmentName: try fragmentName().unwrap().build(with: buildContext),
+                           typeCondition: try typeCondition().unwrap().build(with: buildContext),
+                           directives: try directives()?.build(with: buildContext),
+                           selectionSet: try selectionSet().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.FragmentNameContext: Builder {
-    typealias LanguageType = String
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> String {
         getText()
     }
 }
 
 extension GraphQLParser.TypeConditionContext: Builder {
-    typealias LanguageType = NamedType
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> NamedType {
         if let context = namedType() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.InlineFragmentContext: Builder {
-    typealias LanguageType = InlineFragment
-
-    func build() throws -> LanguageType {
-        InlineFragment(typeCondition: try typeCondition()?.build(),
-                       directives: try directives()?.build(),
-                       selectionSet: try selectionSet().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> InlineFragment {
+        InlineFragment(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                       typeCondition: try typeCondition()?.build(with: buildContext),
+                       directives: try directives()?.build(with: buildContext),
+                       selectionSet: try selectionSet().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ValueContext: Builder {
-    typealias LanguageType = Value
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> Value {
         if let context = variable() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = intValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = floatValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = stringValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = booleanValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = nullValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = enumValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = listValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = objectValue() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.IntValueContext: Builder {
-    typealias LanguageType = IntValue
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> IntValue {
         if let intValue = Int32(getText()) {
-            return IntValue(intValue: intValue)
+            return IntValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                            intValue: intValue)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.FloatValueContext: Builder {
-    typealias LanguageType = FloatValue
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> FloatValue {
         if let floatValue = Double(getText()) {
-            return FloatValue(floatValue: floatValue)
+            return FloatValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                              floatValue: floatValue)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.BooleanValueContext: Builder {
-    typealias LanguageType = BooleanValue
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> BooleanValue {
         if TRUE() != nil {
-            return BooleanValue(booleanValue: true)
+            return BooleanValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                booleanValue: true)
         }
         if FALSE() != nil {
-            return BooleanValue(booleanValue: false)
+            return BooleanValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                booleanValue: false)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.StringValueContext: Builder {
-    typealias LanguageType = StringValue
+        // See <https://spec.graphql.org/June2018/#sec-String-Value> for parsing details.
 
-    // See <https://spec.graphql.org/June2018/#sec-String-Value> for parsing details.
-
-    private func build(blockStringCharacters: Substring.SubSequence) throws -> LanguageType {
+    private func value(ofBlockStringCharacters stringCharacters: Substring.SubSequence) throws -> String {
         // See <https://spec.graphql.org/June2018/#sec-Line-Terminators>
         let isLineTerminators = { (scalar: UnicodeScalar) -> Bool in
             scalar == UnicodeScalar(0x000A) || scalar == UnicodeScalar(0x000D)
@@ -322,7 +310,7 @@ extension GraphQLParser.StringValueContext: Builder {
         }
 
         // `replacingOccurrences(of:with:) requires `Foundation` framework.
-        let rawValue = blockStringCharacters.replacingOccurrences(of: "\\\"\"\"", with: "\"\"\"").unicodeScalars
+        let rawValue = stringCharacters.replacingOccurrences(of: "\\\"\"\"", with: "\"\"\"").unicodeScalars
 
         let lines = rawValue.split(whereSeparator: isLineTerminators)
 
@@ -358,10 +346,10 @@ extension GraphQLParser.StringValueContext: Builder {
         var formattedString = ""
         formattedString.unicodeScalars.append(contentsOf: formattedUnicodeScalars)
 
-        return StringValue(stringValue: formattedString)
+        return formattedString
     }
 
-    private func build(stringCharacters: Substring.SubSequence) throws -> LanguageType {
+    private func value(ofStringCharacters stringCharacters: Substring.SubSequence) throws -> String {
         var unescapedUnicodeScalars = String.UnicodeScalarView()
         var iterator = stringCharacters.unicodeScalars.makeIterator()
 
@@ -404,338 +392,304 @@ extension GraphQLParser.StringValueContext: Builder {
                 unescapedUnicodeScalars.append(unicodeScalar)
             }
         }
-        return StringValue(stringValue: String(unescapedUnicodeScalars))
+        return String(unescapedUnicodeScalars)
     }
 
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> StringValue {
         let text = getText()
         if text.hasPrefix("\"\"\"") && text.hasSuffix("\"\"\"") {
-            return try build(blockStringCharacters: text.dropFirst(3).dropLast(3))
+            let stringValue = try value(ofBlockStringCharacters: text.dropFirst(3).dropLast(3))
+            return StringValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                               stringValue: stringValue)
         }
         if text.hasPrefix("\"") && text.hasSuffix("\"") {
-            return try build(stringCharacters: text.dropFirst().dropLast())
+            let stringValue = try value(ofStringCharacters: text.dropFirst().dropLast())
+            return StringValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                               stringValue: stringValue)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.NullValueContext: Builder {
-    typealias LanguageType = NullValue
-
-    func build() throws -> LanguageType {
-        NullValue()
+    func build(with buildContext: BuildContext) throws -> NullValue {
+        NullValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self))
     }
 }
 
 extension GraphQLParser.EnumValueContext: Builder {
-    typealias LanguageType = EnumValue
-
-    func build() throws -> LanguageType {
-        EnumValue(enumValue: getText())
+    func build(with buildContext: BuildContext) throws -> EnumValue {
+        EnumValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                  enumValue: getText())
     }
 }
 
 extension GraphQLParser.ListValueContext: Builder {
-    typealias LanguageType = ListValue
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> ListValue {
         let values = try value().map { value in
-            try value.build()
+            try value.build(with: buildContext)
         }
-        return ListValue(values: values)
+        return ListValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                         values: values)
     }
 }
 
 extension GraphQLParser.ObjectValueContext: Builder {
-    typealias LanguageType = ObjectValue
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> ObjectValue {
         let objectFields = try objectField().map { objectField -> (String, Value) in
-            let name = try objectField.name().unwrap().build()
-            let value = try objectField.value().unwrap().build()
+            let name = try objectField.name().unwrap().build(with: buildContext)
+            let value = try objectField.value().unwrap().build(with: buildContext)
             return (name, value)
         }
-        return ObjectValue(objectFields: .init(uniqueKeysWithValues: objectFields))
+        return ObjectValue(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                           objectFields: .init(uniqueKeysWithValues: objectFields))
     }
 }
 
 extension GraphQLParser.VariableContext: Builder {
-    typealias LanguageType = Variable
-
-    func build() throws -> LanguageType {
-        Variable(name: try name().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> Variable {
+        Variable(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                 name: try name().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.VariableDefinitionsContext: Builder {
-    typealias LanguageType = [VariableDefinition]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [VariableDefinition] {
         try variableDefinition().map { variableDefinition in
-            try variableDefinition.build()
+            try variableDefinition.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.VariableDefinitionContext: Builder {
-    typealias LanguageType = VariableDefinition
-
-    func build() throws -> LanguageType {
-        VariableDefinition(variable: try variable().unwrap().build(),
-                           typeReference: try typeReference().unwrap().build(),
-                           defaultValue: try defaultValue()?.build())
+    func build(with buildContext: BuildContext) throws -> VariableDefinition {
+        VariableDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                           variable: try variable().unwrap().build(with: buildContext),
+                           typeReference: try typeReference().unwrap().build(with: buildContext),
+                           defaultValue: try defaultValue()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.DefaultValueContext: Builder {
-    typealias LanguageType = Value
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> Value {
         if let context = value() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.TypeReferenceContext: Builder {
-    typealias LanguageType = TypeReference
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> TypeReference {
         if let context = namedType() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = listType() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = nonNullType() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.NamedTypeContext: Builder {
-    typealias LanguageType = NamedType
-
-    func build() throws -> LanguageType {
-        NamedType(name: try name().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> NamedType {
+        NamedType(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                  name: try name().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ListTypeContext: Builder {
-    typealias LanguageType = ListType
-
-    func build() throws -> LanguageType {
-        ListType(typeReference: try typeReference().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> ListType {
+        ListType(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                 typeReference: try typeReference().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.NonNullTypeContext: Builder {
-    typealias LanguageType = NonNullType
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> NonNullType {
         if let context = namedType() {
-            return .namedType(try context.build())
+            return .namedType(try context.build(with: buildContext))
         }
         if let context = listType() {
-            return .listType(try context.build())
+            return .listType(try context.build(with: buildContext))
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.DirectivesContext: Builder {
-    typealias LanguageType = [Directive]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [Directive] {
         try directive().map { directive in
-            try directive.build()
+            try directive.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.DirectiveContext: Builder {
-    typealias LanguageType = Directive
-
-    func build() throws -> LanguageType {
-        Directive(name: try name().unwrap().build(),
-                  arguments: try arguments()?.build())
+    func build(with buildContext: BuildContext) throws -> Directive {
+        Directive(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                  name: try name().unwrap().build(with: buildContext),
+                  arguments: try arguments()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.TypeSystemDefinitionContext: Builder {
-    typealias LanguageType = TypeSystemDefinition
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> TypeSystemDefinition {
         if let context = schemaDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = typeDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = directiveDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.TypeSystemExtensionContext: Builder {
-    typealias LanguageType = TypeSystemExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> TypeSystemExtension {
         if let context = self.schemaExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = self.typeExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.SchemaDefinitionContext: Builder {
-    typealias LanguageType = SchemaDefinition
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> SchemaDefinition {
         let rootOperationTypeDefinitions = try rootOperationTypeDefinition().map { rootOperationTypeDefinition in
-            try rootOperationTypeDefinition.build()
+            try rootOperationTypeDefinition.build(with: buildContext)
         }
-        return SchemaDefinition(directives: try directives()?.build(),
+        return SchemaDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                directives: try directives()?.build(with: buildContext),
                                 rootOperationTypeDefinitions: rootOperationTypeDefinitions)
     }
 }
 
 extension GraphQLParser.RootOperationTypeDefinitionContext: Builder {
-    typealias LanguageType = RootOperationTypeDefinition
-
-    func build() throws -> LanguageType {
-        RootOperationTypeDefinition(operationType: try operationType().unwrap().build(),
-                                    namedType: try namedType().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> RootOperationTypeDefinition {
+        RootOperationTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                    operationType: try operationType().unwrap().build(with: buildContext),
+                                    namedType: try namedType().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.SchemaExtensionContext: Builder {
-    typealias LanguageType = SchemaExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> SchemaExtension {
         let operationTypeDefinitions = try operationTypeDefinition().map { operationTypeDefinition in
-            try operationTypeDefinition.build()
+            try operationTypeDefinition.build(with: buildContext)
         }
-        return SchemaExtension(directives: try directives()?.build(),
-                        operationTypeDefinitions: operationTypeDefinitions)
+        return SchemaExtension(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                               directives: try directives()?.build(with: buildContext),
+                               operationTypeDefinitions: operationTypeDefinitions)
     }
 }
 
 extension GraphQLParser.OperationTypeDefinitionContext: Builder {
-    typealias LanguageType = OperationTypeDefinition
-
-    func build() throws -> LanguageType {
-        OperationTypeDefinition(operationType: try operationType().unwrap().build(),
-                                namedType: try namedType().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> OperationTypeDefinition {
+        OperationTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                operationType: try operationType().unwrap().build(with: buildContext),
+                                namedType: try namedType().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.DescriptionContext: Builder {
-    typealias LanguageType = Description
-
-    func build() throws -> LanguageType {
-        Description(stringValue: try stringValue().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> Description {
+        Description(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                    stringValue: try stringValue().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.TypeDefinitionContext: Builder {
-    typealias LanguageType = TypeDefinition
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> TypeDefinition {
         if let context = scalarTypeDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = objectTypeDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = interfaceTypeDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = unionTypeDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = enumTypeDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = inputObjectTypeDefinition() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.TypeExtensionContext: Builder {
-    typealias LanguageType = TypeExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> TypeExtension {
         if let context = scalarTypeExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = objectTypeExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = interfaceTypeExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = unionTypeExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = enumTypeExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = inputObjectTypeExtension() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.ScalarTypeDefinitionContext: Builder {
-    typealias LanguageType = ScalarTypeDefinition
-
-    func build() throws -> LanguageType {
-        ScalarTypeDefinition(description: try description()?.build(),
-                             name: try name().unwrap().build(),
-                             directives: try directives()?.build())
+    func build(with buildContext: BuildContext) throws -> ScalarTypeDefinition {
+        ScalarTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                             description: try description()?.build(with: buildContext),
+                             name: try name().unwrap().build(with: buildContext),
+                             directives: try directives()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ScalarTypeExtensionContext: Builder {
-    typealias LanguageType = ScalarTypeExtension
-
-    func build() throws -> LanguageType {
-        ScalarTypeExtension(name: try name().unwrap().build(),
-                            directives: try directives().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> ScalarTypeExtension {
+        ScalarTypeExtension(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                            name: try name().unwrap().build(with: buildContext),
+                            directives: try directives().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ObjectTypeDefinitionContext: Builder {
-    typealias LanguageType = ObjectTypeDefinition
-
-    func build() throws -> LanguageType {
-        ObjectTypeDefinition(description: try description()?.build(),
-                             name: try name().unwrap().build(),
-                             implementsInterfaces: try implementsInterfaces()?.build(),
-                             directives: try directives()?.build(),
-                             fieldsDefinition: try fieldsDefinition()?.build())
+    func build(with buildContext: BuildContext) throws -> ObjectTypeDefinition {
+        ObjectTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                             description: try description()?.build(with: buildContext),
+                             name: try name().unwrap().build(with: buildContext),
+                             implementsInterfaces: try implementsInterfaces()?.build(with: buildContext),
+                             directives: try directives()?.build(with: buildContext),
+                             fieldsDefinition: try fieldsDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ImplementsInterfacesContext: Builder {
-    typealias LanguageType = [NamedType]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [NamedType] {
         var types = [NamedType]()
         var currentContext: GraphQLParser.ImplementsInterfacesContext? = self
         while let context = currentContext {
-            types.append(try context.namedType().unwrap().build())
+            types.append(try context.namedType().unwrap().build(with: buildContext))
             currentContext = context.implementsInterfaces()
         }
         return types.reversed()
@@ -743,102 +697,90 @@ extension GraphQLParser.ImplementsInterfacesContext: Builder {
 }
 
 extension GraphQLParser.FieldsDefinitionContext: Builder {
-    typealias LanguageType = [FieldDefinition]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [FieldDefinition] {
         try fieldDefinition().map { fieldDefinition in
-            try fieldDefinition.build()
+            try fieldDefinition.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.FieldDefinitionContext: Builder {
-    typealias LanguageType = FieldDefinition
-
-    func build() throws -> LanguageType {
-        FieldDefinition(description: try description()?.build(),
-                        name: try name().unwrap().build(),
-                        argumentsDefinition: try argumentsDefinition()?.build(),
-                        typeReference: try typeReference().unwrap().build(),
-                        directives: try directives()?.build())
+    func build(with buildContext: BuildContext) throws -> FieldDefinition {
+        FieldDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                        description: try description()?.build(with: buildContext),
+                        name: try name().unwrap().build(with: buildContext),
+                        argumentsDefinition: try argumentsDefinition()?.build(with: buildContext),
+                        typeReference: try typeReference().unwrap().build(with: buildContext),
+                        directives: try directives()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ArgumentsDefinitionContext: Builder {
-    typealias LanguageType = [InputValueDefinition]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [InputValueDefinition] {
         try inputValueDefinition().map { inputValueDefinition in
-            try inputValueDefinition.build()
+            try inputValueDefinition.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.InputValueDefinitionContext: Builder {
-    typealias LanguageType = InputValueDefinition
-
-    func build() throws -> LanguageType {
-        InputValueDefinition(description: try description()?.build(),
-                             name: try name().unwrap().build(),
-                             typeReference: try typeReference().unwrap().build(),
-                             defaultValue: try defaultValue()?.build(),
-                             directives: try directives()?.build())
+    func build(with buildContext: BuildContext) throws -> InputValueDefinition {
+        InputValueDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                             description: try description()?.build(with: buildContext),
+                             name: try name().unwrap().build(with: buildContext),
+                             typeReference: try typeReference().unwrap().build(with: buildContext),
+                             defaultValue: try defaultValue()?.build(with: buildContext),
+                             directives: try directives()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.ObjectTypeExtensionContext: Builder {
-    typealias LanguageType = ObjectTypeExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> ObjectTypeExtension {
         // TODO: Combination of arguments is restricted.
-        ObjectTypeExtension(name: try name().unwrap().build(),
-                            implementsInterfaces: try implementsInterfaces()?.build(),
-                            directives: try directives()?.build(),
-                            fieldsDefinition: try fieldsDefinition()?.build())
+        ObjectTypeExtension(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                            name: try name().unwrap().build(with: buildContext),
+                            implementsInterfaces: try implementsInterfaces()?.build(with: buildContext),
+                            directives: try directives()?.build(with: buildContext),
+                            fieldsDefinition: try fieldsDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.InterfaceTypeDefinitionContext: Builder {
-    typealias LanguageType = InterfaceTypeDefinition
-
-    func build() throws -> LanguageType {
-        InterfaceTypeDefinition(description: try description()?.build(),
-                                name: try name().unwrap().build(),
-                                directives: try directives()?.build(),
-                                fieldsDefinition: try fieldsDefinition()?.build())
+    func build(with buildContext: BuildContext) throws -> InterfaceTypeDefinition {
+        InterfaceTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                description: try description()?.build(with: buildContext),
+                                name: try name().unwrap().build(with: buildContext),
+                                directives: try directives()?.build(with: buildContext),
+                                fieldsDefinition: try fieldsDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.InterfaceTypeExtensionContext: Builder {
-    typealias LanguageType = InterfaceTypeExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> InterfaceTypeExtension {
         // TODO: Combination of arguments is restricted.
-        InterfaceTypeExtension(name: try name().unwrap().build(),
-                               directives: try directives()?.build(),
-                               fieldsDefinition: try fieldsDefinition()?.build())
+        InterfaceTypeExtension(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                               name: try name().unwrap().build(with: buildContext),
+                               directives: try directives()?.build(with: buildContext),
+                               fieldsDefinition: try fieldsDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.UnionTypeDefinitionContext: Builder {
-    typealias LanguageType = UnionTypeDefinition
-
-    func build() throws -> LanguageType {
-        UnionTypeDefinition(description: try description()?.build(),
-                            name: try name().unwrap().build(),
-                            directives: try directives()?.build(),
-                            unionMemberTypes: try unionMemberTypes()?.build())
+    func build(with buildContext: BuildContext) throws -> UnionTypeDefinition {
+        UnionTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                            description: try description()?.build(with: buildContext),
+                            name: try name().unwrap().build(with: buildContext),
+                            directives: try directives()?.build(with: buildContext),
+                            unionMemberTypes: try unionMemberTypes()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.UnionMemberTypesContext: Builder {
-    typealias LanguageType = [NamedType]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [NamedType] {
         var types = [NamedType]()
         var currentContext: GraphQLParser.UnionMemberTypesContext? = self
         while let context = currentContext {
-            types.append(try context.namedType().unwrap().build())
+            types.append(try context.namedType().unwrap().build(with: buildContext))
             currentContext = context.unionMemberTypes()
         }
         return types.reversed()
@@ -846,109 +788,96 @@ extension GraphQLParser.UnionMemberTypesContext: Builder {
 }
 
 extension GraphQLParser.UnionTypeExtensionContext: Builder {
-    typealias LanguageType = UnionTypeExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> UnionTypeExtension {
         // TODO: Combination of arguments is restricted.
-        UnionTypeExtension(name: try name().unwrap().build(),
-                           directives: try directives()?.build(),
-                           unionMemberTypes: try unionMemberTypes()?.build())
+        UnionTypeExtension(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                           name: try name().unwrap().build(with: buildContext),
+                           directives: try directives()?.build(with: buildContext),
+                           unionMemberTypes: try unionMemberTypes()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.EnumTypeDefinitionContext: Builder {
-    typealias LanguageType = EnumTypeDefinition
-
-    func build() throws -> LanguageType {
-        EnumTypeDefinition(description: try description()?.build(),
-                           name: try name().unwrap().build(),
-                           directives: try directives()?.build(),
-                           enumValuesDefinition: try enumValuesDefinition()?.build())
+    func build(with buildContext: BuildContext) throws -> EnumTypeDefinition {
+        EnumTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                           description: try description()?.build(with: buildContext),
+                           name: try name().unwrap().build(with: buildContext),
+                           directives: try directives()?.build(with: buildContext),
+                           enumValuesDefinition: try enumValuesDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.EnumValuesDefinitionContext: Builder {
-    typealias LanguageType = [EnumValueDefinition]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [EnumValueDefinition] {
         try enumValueDefinition().map { enumValueDefinition in
-            try enumValueDefinition.build()
+            try enumValueDefinition.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.EnumValueDefinitionContext: Builder {
-    typealias LanguageType = EnumValueDefinition
-
-    func build() throws -> LanguageType {
-        EnumValueDefinition(description: try description()?.build(),
-                            enumValue: try enumValue().unwrap().build(),
-                            directives: try directives()?.build())
+    func build(with buildContext: BuildContext) throws -> EnumValueDefinition {
+        EnumValueDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                            description: try description()?.build(with: buildContext),
+                            enumValue: try enumValue().unwrap().build(with: buildContext),
+                            directives: try directives()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.EnumTypeExtensionContext: Builder {
-    typealias LanguageType = EnumTypeExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> EnumTypeExtension {
         // TODO: Combination of arguments is restricted.
-        EnumTypeExtension(name: try name().unwrap().build(),
-                          directives: try directives()?.build(),
-                          enumValuesDefinition: try enumValuesDefinition()?.build())
+        EnumTypeExtension(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                          name: try name().unwrap().build(with: buildContext),
+                          directives: try directives()?.build(with: buildContext),
+                          enumValuesDefinition: try enumValuesDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.InputObjectTypeDefinitionContext: Builder {
-    typealias LanguageType = InputObjectTypeDefinition
-
-    func build() throws -> LanguageType {
-        InputObjectTypeDefinition(description: try description()?.build(),
-                                  name: try name().unwrap().build(),
-                                  directives: try directives()?.build(),
-                                  inputFieldsDefinition: try inputFieldsDefinition()?.build())
+    func build(with buildContext: BuildContext) throws -> InputObjectTypeDefinition {
+        InputObjectTypeDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                  description: try description()?.build(with: buildContext),
+                                  name: try name().unwrap().build(with: buildContext),
+                                  directives: try directives()?.build(with: buildContext),
+                                  inputFieldsDefinition: try inputFieldsDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.InputFieldsDefinitionContext: Builder {
-    typealias LanguageType = [InputValueDefinition]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [InputValueDefinition] {
         try inputValueDefinition().map { inputValueDefinition in
-            try inputValueDefinition.build()
+            try inputValueDefinition.build(with: buildContext)
         }
     }
 }
 
 extension GraphQLParser.InputObjectTypeExtensionContext: Builder {
-    typealias LanguageType = InputObjectTypeExtension
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> InputObjectTypeExtension {
         // TODO: Combination of arguments is restricted.
-        return InputObjectTypeExtension(name: try name().unwrap().build(),
-                                        directives: try directives()?.build(),
-                                        inputFieldsDefinition: try inputFieldsDefinition()?.build())
+        return InputObjectTypeExtension(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                                        name: try name().unwrap().build(with: buildContext),
+                                        directives: try directives()?.build(with: buildContext),
+                                        inputFieldsDefinition: try inputFieldsDefinition()?.build(with: buildContext))
     }
 }
 
 extension GraphQLParser.DirectiveDefinitionContext: Builder {
-    typealias LanguageType = DirectiveDefinition
-
-    func build() throws -> LanguageType {
-        DirectiveDefinition(description: try description()?.build(),
-                            name: try name().unwrap().build(),
-                            argumentsDefinition: try argumentsDefinition()?.build(),
-                            directiveLocations: try directiveLocations().unwrap().build())
+    func build(with buildContext: BuildContext) throws -> DirectiveDefinition {
+        DirectiveDefinition(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                            description: try description()?.build(with: buildContext),
+                            name: try name().unwrap().build(with: buildContext),
+                            argumentsDefinition: try argumentsDefinition()?.build(with: buildContext),
+                            directiveLocations: try directiveLocations().unwrap().build(with: buildContext))
     }
 }
 
 extension GraphQLParser.DirectiveLocationsContext: Builder {
-    typealias LanguageType = [DirectiveLocation]
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> [DirectiveLocation] {
         var locations = [DirectiveLocation]()
         var currentContext: GraphQLParser.DirectiveLocationsContext? = self
         while let context = currentContext {
-            locations.append(try context.directiveLocation().unwrap().build())
+            locations.append(try context.directiveLocation().unwrap().build(with: buildContext))
             currentContext = context.directiveLocations()
         }
         return locations.reversed()
@@ -956,23 +885,19 @@ extension GraphQLParser.DirectiveLocationsContext: Builder {
 }
 
 extension GraphQLParser.DirectiveLocationContext: Builder {
-    typealias LanguageType = DirectiveLocation
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> DirectiveLocation {
         if let context = executableDirectiveLocation() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         if let context = typeSystemDirectiveLocation() {
-            return try context.build()
+            return try context.build(with: buildContext)
         }
         throw BuilderError.unexpectedContext(self)
     }
 }
 
 extension GraphQLParser.ExecutableDirectiveLocationContext: Builder {
-    typealias LanguageType = ExecutableDirectiveLocation
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> ExecutableDirectiveLocation {
         if let executableDirectiveLocation = ExecutableDirectiveLocation(rawValue: getText()) {
             return executableDirectiveLocation
         }
@@ -981,9 +906,7 @@ extension GraphQLParser.ExecutableDirectiveLocationContext: Builder {
 }
 
 extension GraphQLParser.TypeSystemDirectiveLocationContext: Builder {
-    typealias LanguageType = TypeSystemDirectiveLocation
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> TypeSystemDirectiveLocation {
         if let typeSystemDirectiveLocation = TypeSystemDirectiveLocation(rawValue: getText()) {
             return typeSystemDirectiveLocation
         }
@@ -992,9 +915,7 @@ extension GraphQLParser.TypeSystemDirectiveLocationContext: Builder {
 }
 
 extension GraphQLParser.NameContext: Builder {
-    typealias LanguageType = String
-
-    func build() throws -> LanguageType {
+    func build(with buildContext: BuildContext) throws -> String {
         getText()
     }
 }
