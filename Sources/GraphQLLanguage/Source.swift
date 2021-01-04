@@ -8,8 +8,8 @@
 import Antlr4
 
 public struct Source {
-    private var string: String
-    private var name: String?
+    public var string: String
+    public var name: String?
 
     public init(string: String) {
         self.string = string
@@ -25,5 +25,22 @@ public struct Source {
         let inputStream = ANTLRInputStream(unicodeScalars, unicodeScalars.count)
         inputStream.name = name
         return inputStream
+    }
+}
+
+extension LanguageNode {
+    var sourceUnicodeScalars: String.UnicodeScalarView.SubSequence? {
+        guard let parserRuleContext = parserRuleContext,
+              let source = source,
+              let startOffset = parserRuleContext.getStart()?.getStartIndex(),
+              let endOffset = parserRuleContext.getStop()?.getStopIndex()
+        else {
+            return nil
+        }
+
+        let unicodeScalars = source.string.unicodeScalars
+        let startIndex = unicodeScalars.index(unicodeScalars.startIndex, offsetBy: startOffset)
+        let endIndex = unicodeScalars.index(unicodeScalars.startIndex, offsetBy: endOffset)
+        return unicodeScalars[startIndex...endIndex]
     }
 }

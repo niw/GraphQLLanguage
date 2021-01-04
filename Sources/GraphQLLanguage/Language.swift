@@ -11,6 +11,92 @@
 protocol LanguageContext {
 }
 
+protocol LanguageNode {
+    var context: LanguageContext? { get }
+}
+extension Document: LanguageNode {
+}
+extension OperationDefinition: LanguageNode {
+}
+extension Field: LanguageNode {
+}
+extension Argument: LanguageNode {
+}
+extension FragmentSpread: LanguageNode {
+}
+extension FragmentDefinition: LanguageNode {
+}
+extension InlineFragment: LanguageNode {
+}
+extension IntValue: LanguageNode {
+}
+extension FloatValue: LanguageNode {
+}
+extension BooleanValue: LanguageNode {
+}
+extension StringValue: LanguageNode {
+}
+extension NullValue: LanguageNode {
+}
+extension EnumValue: LanguageNode {
+}
+extension ListValue: LanguageNode {
+}
+extension ObjectValue: LanguageNode {
+}
+extension Variable: LanguageNode {
+}
+extension VariableDefinition: LanguageNode {
+}
+extension NamedType: LanguageNode {
+}
+extension ListType: LanguageNode {
+}
+extension Directive: LanguageNode {
+}
+extension SchemaDefinition: LanguageNode {
+}
+extension RootOperationTypeDefinition: LanguageNode {
+}
+extension SchemaExtension: LanguageNode {
+}
+extension OperationTypeDefinition: LanguageNode {
+}
+extension Description: LanguageNode {
+}
+extension ScalarTypeDefinition: LanguageNode {
+}
+extension ScalarTypeExtension: LanguageNode {
+}
+extension ObjectTypeDefinition: LanguageNode {
+}
+extension FieldDefinition: LanguageNode {
+}
+extension InputValueDefinition: LanguageNode {
+}
+extension ObjectTypeExtension: LanguageNode {
+}
+extension InterfaceTypeDefinition: LanguageNode {
+}
+extension InterfaceTypeExtension: LanguageNode {
+}
+extension UnionTypeDefinition: LanguageNode {
+}
+extension UnionTypeExtension: LanguageNode {
+}
+extension EnumTypeDefinition: LanguageNode {
+}
+extension EnumValueDefinition: LanguageNode {
+}
+extension EnumTypeExtension: LanguageNode {
+}
+extension InputObjectTypeDefinition: LanguageNode {
+}
+extension InputObjectTypeExtension: LanguageNode {
+}
+extension DirectiveDefinition: LanguageNode {
+}
+
 public struct Document {
     var context: LanguageContext?
 

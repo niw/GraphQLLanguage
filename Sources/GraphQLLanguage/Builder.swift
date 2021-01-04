@@ -66,6 +66,16 @@ struct BuildLanguageContext: LanguageContext {
     var parserRuleContext: ParserRuleContext
 }
 
+extension LanguageNode {
+    var buildContext: BuildContext? {
+        (context as? BuildLanguageContext)?.buildContext
+    }
+
+    var parserRuleContext: ParserRuleContext? {
+        (context as? BuildLanguageContext)?.parserRuleContext
+    }
+}
+
 // MARK: -
 
 extension GraphQLParser.DocumentContext: Builder {

@@ -31,6 +31,16 @@ struct ParseBuildContext: BuildContext {
     var parser: GraphQLParser
 }
 
+extension LanguageNode {
+    var source: Source? {
+        (buildContext as? ParseBuildContext)?.source
+    }
+
+    var parser: GraphQLParser? {
+        (buildContext as? ParseBuildContext)?.parser
+    }
+}
+
 extension Document {
     public static func parsing(_ source: Source) throws -> Self {
         let parser = try GraphQLParser(source.inputStream())
