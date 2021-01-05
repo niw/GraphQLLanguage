@@ -10,8 +10,8 @@ import XCTest
 
 final class ParsingTest: XCTestCase {
     func testDocumentParsing() {
-        XCTAssertNoThrow {
-            _ = try Document.parsing(Source(string: "type Cat"))
-        }
+        let source = Source(string: "type Cat")
+
+        XCTAssertNoThrow(try Document.parsing(source))
     }
 }

@@ -14,6 +14,7 @@ protocol LanguageContext {
 protocol LanguageNode {
     var context: LanguageContext? { get }
 }
+
 extension Document: LanguageNode {
 }
 extension OperationDefinition: LanguageNode {
@@ -109,6 +110,7 @@ public protocol Definition {
 
 public protocol ExecutableDefinition: Definition {
 }
+
 extension OperationDefinition: ExecutableDefinition {
 }
 extension FragmentDefinition: ExecutableDefinition {
@@ -134,6 +136,7 @@ public enum OperationType: String {
 
 public protocol Selection {
 }
+
 extension Field: Selection {
 }
 extension FragmentSpread: Selection {
@@ -192,6 +195,7 @@ public struct InlineFragment {
 
 public protocol Value {
 }
+
 extension Variable: Value {
 }
 extension IntValue: Value {
@@ -281,6 +285,7 @@ public struct VariableDefinition {
 
 public protocol TypeReference {
 }
+
 extension NamedType: TypeReference {
 }
 extension ListType: TypeReference {
@@ -318,6 +323,7 @@ public struct Directive {
 // See `TypeDefinition`
 public protocol TypeSystemDefinition: Definition {
 }
+
 extension SchemaDefinition: TypeSystemDefinition {
 }
 extension DirectiveDefinition: TypeSystemDefinition {
@@ -365,6 +371,7 @@ public struct Description {
 
 public protocol TypeDefinition: TypeSystemDefinition {
 }
+
 extension ScalarTypeDefinition: TypeDefinition {
 }
 extension ObjectTypeDefinition: TypeDefinition {
@@ -380,6 +387,7 @@ extension InputObjectTypeDefinition: TypeDefinition {
 
 public protocol TypeExtension: TypeSystemExtension {
 }
+
 extension ScalarTypeExtension: TypeExtension {
 }
 extension ObjectTypeExtension: TypeExtension {
@@ -548,6 +556,7 @@ public struct DirectiveDefinition {
 
 public protocol DirectiveLocation {
 }
+
 extension ExecutableDirectiveLocation: DirectiveLocation {
 }
 extension TypeSystemDirectiveLocation: DirectiveLocation {
