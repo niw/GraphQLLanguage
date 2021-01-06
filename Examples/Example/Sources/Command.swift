@@ -49,7 +49,7 @@ struct Command: ParsableCommand {
                     return nil
                 }
             }
-            print(result ?? source.string)
+            print(result)
         }
     }
 }

@@ -57,13 +57,14 @@ private class RewritingVisitor: Visitor {
 }
 
 enum RewriteError: Error {
+    case unavailableSource
     case overwrappedRanges
 }
 
 extension Document {
-    public func rewrite(with rewriter: Rewriter) throws -> String? {
+    public func rewrite(with rewriter: Rewriter) throws -> String {
         guard let source = source else {
-            return nil
+            throw RewriteError.unavailableSource
         }
         var unicodeScalars = source.string.unicodeScalars
 
@@ -92,7 +93,7 @@ extension Document {
         return String(unicodeScalars)
     }
 
-    public func rewrite(with rewriter: @escaping (Rewritable) -> String?) throws -> String? {
+    public func rewrite(with rewriter: @escaping (Rewritable) -> String?) throws -> String {
         try rewrite(with: BlockRewriter(block: rewriter))
     }
 }
