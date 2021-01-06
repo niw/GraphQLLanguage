@@ -67,12 +67,8 @@ struct BuildLanguageContext: LanguageContext {
 }
 
 extension LanguageNode {
-    var buildContext: BuildContext? {
-        (context as? BuildLanguageContext)?.buildContext
-    }
-
-    var parserRuleContext: ParserRuleContext? {
-        (context as? BuildLanguageContext)?.parserRuleContext
+    var buildLanguageContext: BuildLanguageContext? {
+        context as? BuildLanguageContext
     }
 }
 
