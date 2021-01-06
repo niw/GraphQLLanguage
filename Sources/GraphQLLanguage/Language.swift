@@ -8,10 +8,10 @@
 // GraphQL Language Definition in plain Swift expression.
 // Ordered in the same way as `GraphQL.g4` grammar.
 
-protocol LanguageContext {
+public protocol LanguageContext {
 }
 
-protocol LanguageNode {
+public protocol LanguageNode {
     var context: LanguageContext? { get }
 }
 
@@ -101,7 +101,7 @@ extension DirectiveDefinition: LanguageNode {
 }
 
 public struct Document {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var definitions: [Definition]
 }
@@ -119,7 +119,7 @@ extension FragmentDefinition: ExecutableDefinition {
 }
 
 public struct OperationDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var operationType: OperationType
     public var name: String?
@@ -147,7 +147,7 @@ extension InlineFragment: Selection {
 }
 
 public struct Field {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var alias: String?
     public var name: String
@@ -159,7 +159,7 @@ public struct Field {
 // public struct Arguments = [Argument]
 
 public struct Argument {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var value: Value
@@ -168,14 +168,14 @@ public struct Argument {
 // public struct Alias // Not used
 
 public struct FragmentSpread {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var fragmentName: String
     public var directives: [Directive]?
 }
 
 public struct FragmentDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var fragmentName: String
     public var typeCondition: NamedType
@@ -188,7 +188,7 @@ public struct FragmentDefinition {
 // public struct TypeCondition = NamedType
 
 public struct InlineFragment {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var typeCondition: NamedType?
     public var directives: [Directive]?
@@ -218,49 +218,49 @@ extension ObjectValue: Value {
 }
 
 public struct IntValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     // GraphQL `Int` is a signed 32‐bit integer.
     public var intValue: Int32
 }
 
 public struct FloatValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     // GraphQL `Float` is a signed double‐precision.
     public var floatValue: Double
 }
 
 public struct BooleanValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var booleanValue: Bool
 }
 
 public struct StringValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var stringValue: String
 }
 
 public struct NullValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 }
 
 public struct EnumValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var enumValue: String
 }
 
 public struct ListValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var values: [Value]
 }
 
 public struct ObjectValue {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var objectFields: [String: Value]
 }
@@ -268,7 +268,7 @@ public struct ObjectValue {
 // public struct ObjectField // Not used
 
 public struct Variable {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
 }
@@ -276,7 +276,7 @@ public struct Variable {
 // public struct VariableDefinitions = [VariableDefinition]
 
 public struct VariableDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var variable: Variable
     public var typeReference: TypeReference
@@ -296,13 +296,13 @@ extension NonNullType: TypeReference {
 }
 
 public struct NamedType {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
 }
 
 public struct ListType {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var typeReference: TypeReference
 }
@@ -316,7 +316,7 @@ extension ListType: NullableTypeReference {
 }
 
 public struct NonNullType {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var typeReference: NullableTypeReference
 }
@@ -324,7 +324,7 @@ public struct NonNullType {
 // public struct Directives = [Directive]
 
 public struct Directive {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var arguments: [Argument]?
@@ -346,35 +346,35 @@ extension SchemaExtension: TypeSystemExtension {
 }
 
 public struct SchemaDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var directives: [Directive]?
     public var rootOperationTypeDefinitions: [RootOperationTypeDefinition]?
 }
 
 public struct RootOperationTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var operationType: OperationType
     public var namedType: NamedType
 }
 
 public struct SchemaExtension {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var directives: [Directive]?
     public var operationTypeDefinitions: [OperationTypeDefinition]?
 }
 
 public struct OperationTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var operationType: OperationType
     public var namedType: NamedType
 }
 
 public struct Description {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var stringValue: StringValue
 }
@@ -412,7 +412,7 @@ extension InputObjectTypeExtension: TypeExtension {
 }
 
 public struct ScalarTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -420,14 +420,14 @@ public struct ScalarTypeDefinition {
 }
 
 public struct ScalarTypeExtension {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var directives: [Directive]
 }
 
 public struct ObjectTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -441,7 +441,7 @@ public struct ObjectTypeDefinition {
 // public struct FieldsDefinition = [FieldDefinition]
 
 public struct FieldDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -453,7 +453,7 @@ public struct FieldDefinition {
 // public struct ArgumentsDefinition = [InputValueDefinition]
 
 public struct InputValueDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -463,7 +463,7 @@ public struct InputValueDefinition {
 }
 
 public struct ObjectTypeExtension {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var implementsInterfaces: [NamedType]?
@@ -472,7 +472,7 @@ public struct ObjectTypeExtension {
 }
 
 public struct InterfaceTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -481,7 +481,7 @@ public struct InterfaceTypeDefinition {
 }
 
 public struct InterfaceTypeExtension {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var directives: [Directive]?
@@ -489,7 +489,7 @@ public struct InterfaceTypeExtension {
 }
 
 public struct UnionTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -500,7 +500,7 @@ public struct UnionTypeDefinition {
 // public struct UnionMemberTypes = [NamedType]
 
 public struct UnionTypeExtension {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var directives: [Directive]?
@@ -508,7 +508,7 @@ public struct UnionTypeExtension {
 }
 
 public struct EnumTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -519,7 +519,7 @@ public struct EnumTypeDefinition {
 // public struct  EnumValuesDefinition = [EnumValueDefinition]
 
 public struct EnumValueDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var enumValue: EnumValue
@@ -527,7 +527,7 @@ public struct EnumValueDefinition {
 }
 
 public struct EnumTypeExtension {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var directives: [Directive]?
@@ -535,7 +535,7 @@ public struct EnumTypeExtension {
 }
 
 public struct InputObjectTypeDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String
@@ -546,7 +546,7 @@ public struct InputObjectTypeDefinition {
 // public struct InputFieldsDefinition = [InputValueDefinition]
 
 public struct InputObjectTypeExtension {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var name: String
     public var directives: [Directive]?
@@ -554,7 +554,7 @@ public struct InputObjectTypeExtension {
 }
 
 public struct DirectiveDefinition {
-    var context: LanguageContext?
+    public var context: LanguageContext?
 
     public var description: Description?
     public var name: String

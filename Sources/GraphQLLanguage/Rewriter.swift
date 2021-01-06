@@ -38,9 +38,7 @@ private class RewritingVisitor: Visitor {
     }
 
     func visit(on visitable: Visitable) {
-        guard let languageNode = visitable as? LanguageNode,
-              let sourceUnicodeScalars = languageNode.sourceUnicodeScalars
-        else {
+        guard let sourceUnicodeScalars = visitable.sourceUnicodeScalars else {
             return
         }
 

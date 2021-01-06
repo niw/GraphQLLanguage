@@ -5,8 +5,7 @@
 //  Created by Yoshimasa Niwa on 12/24/20
 //
 
-public protocol Visitable {
-}
+public typealias Visitable = LanguageNode
 
 public protocol Visitor {
     func visit(on visitable: Visitable)
@@ -62,91 +61,4 @@ extension Visitable {
     public func visit(with visitor: @escaping (Visitable) -> Void) {
         visit(with: BlockVisitor(block: visitor))
     }
-}
-
-// MARK: -
-
-extension Document: Visitable {
-}
-extension OperationDefinition: Visitable {
-}
-extension Field: Visitable {
-}
-extension Argument: Visitable {
-}
-extension FragmentSpread: Visitable {
-}
-extension FragmentDefinition: Visitable {
-}
-extension InlineFragment: Visitable {
-}
-extension IntValue: Visitable {
-}
-extension FloatValue: Visitable {
-}
-extension BooleanValue: Visitable {
-}
-extension StringValue: Visitable {
-}
-extension NullValue: Visitable {
-}
-extension EnumValue: Visitable {
-}
-extension ListValue: Visitable {
-}
-extension ObjectValue: Visitable {
-}
-extension Variable: Visitable {
-}
-extension VariableDefinition: Visitable {
-}
-extension NamedType: Visitable {
-}
-extension ListType: Visitable {
-}
-extension NonNullType: Visitable {
-}
-extension Directive: Visitable {
-}
-extension SchemaDefinition: Visitable {
-}
-extension RootOperationTypeDefinition: Visitable {
-}
-extension SchemaExtension: Visitable {
-}
-extension OperationTypeDefinition: Visitable {
-}
-extension Description: Visitable {
-}
-extension ScalarTypeDefinition: Visitable {
-}
-extension ScalarTypeExtension: Visitable {
-}
-extension ObjectTypeDefinition: Visitable {
-}
-extension FieldDefinition: Visitable {
-}
-extension InputValueDefinition: Visitable {
-}
-extension ObjectTypeExtension: Visitable {
-}
-extension InterfaceTypeDefinition: Visitable {
-}
-extension InterfaceTypeExtension: Visitable {
-}
-extension UnionTypeDefinition: Visitable {
-}
-extension UnionTypeExtension: Visitable {
-}
-extension EnumTypeDefinition: Visitable {
-}
-extension EnumValueDefinition: Visitable {
-}
-extension EnumTypeExtension: Visitable {
-}
-extension InputObjectTypeDefinition: Visitable {
-}
-extension InputObjectTypeExtension: Visitable {
-}
-extension DirectiveDefinition: Visitable {
 }
