@@ -5,12 +5,7 @@
 //  Created by Yoshimasa Niwa on 12/24/20
 //
 
-public struct Rewritable {
-    public var visitable: Visitable
-
-    public var sourceRange: Range<String.UnicodeScalarView.Index>
-    public var sourceUnicodeScalars: String.UnicodeScalarView.SubSequence
-}
+public typealias Rewritable = Visitable
 
 public protocol Rewriter {
     func rewrite(_ rewritable: Rewritable) -> String?
@@ -21,6 +16,12 @@ private struct BlockRewriter: Rewriter {
 
     func rewrite(_ rewritable: Rewritable) -> String? {
         block(rewritable)
+    }
+}
+
+private extension Collection {
+    var range: Range<Index> {
+        startIndex..<endIndex
     }
 }
 
@@ -42,16 +43,11 @@ private class RewritingVisitor: Visitor {
             return
         }
 
-        let sourceRange = sourceUnicodeScalars.startIndex..<sourceUnicodeScalars.endIndex
-        let rewritable = Rewritable(visitable: visitable,
-                                    sourceRange: sourceRange,
-                                    sourceUnicodeScalars: sourceUnicodeScalars)
-
-        guard let rewritingString = rewriter.rewrite(rewritable) else {
+        guard let rewritingString = rewriter.rewrite(visitable) else {
             return
         }
 
-        let rewriting = Rewriting(range: sourceRange, string: rewritingString)
+        let rewriting = Rewriting(range: sourceUnicodeScalars.range, string: rewritingString)
         rewritings.append(rewriting)
     }
 }

@@ -14,7 +14,7 @@ final class RewriterTest: XCTestCase {
         let document = try Document.parsing(source)
 
         let result = try document.rewrite { rewritable in
-            switch rewritable.visitable {
+            switch rewritable {
             case is Directive:
                 return "@meowmeow"
             default:
@@ -48,7 +48,7 @@ final class RewriterTest: XCTestCase {
         let document = try Document.parsing(source)
 
         let result = try document.rewrite { rewritable in
-            switch rewritable.visitable {
+            switch rewritable {
             case is Document:
                 return "meow"
             default:

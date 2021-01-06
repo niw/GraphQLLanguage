@@ -42,7 +42,7 @@ struct Command: ParsableCommand {
             }
         case .removeDirectives:
             let result = try document.rewrite { rewritable in
-                switch rewritable.visitable {
+                switch rewritable {
                 case is Directive:
                     return ""
                 default:
