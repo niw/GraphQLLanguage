@@ -28,10 +28,16 @@ public struct Source {
     }
 }
 
+extension Document {
+    public var source: Source? {
+        parseBuildContext?.source
+    }
+}
+
 extension LanguageNode {
-    var sourceUnicodeScalars: String.UnicodeScalarView.SubSequence? {
-        guard let parserRuleContext = parserRuleContext,
-              let source = source,
+    public var sourceUnicodeScalars: String.UnicodeScalarView.SubSequence? {
+        guard let parserRuleContext = buildLanguageContext?.parserRuleContext,
+              let source = parseBuildContext?.source,
               let startOffset = parserRuleContext.getStart()?.getStartIndex(),
               let endOffset = parserRuleContext.getStop()?.getStopIndex()
         else {

@@ -32,12 +32,8 @@ struct ParseBuildContext: BuildContext {
 }
 
 extension LanguageNode {
-    var source: Source? {
-        (buildContext as? ParseBuildContext)?.source
-    }
-
-    var parser: GraphQLParser? {
-        (buildContext as? ParseBuildContext)?.parser
+    var parseBuildContext: ParseBuildContext? {
+        buildLanguageContext?.buildContext as? ParseBuildContext
     }
 }
 
