@@ -36,7 +36,7 @@ final class RewriterTest: XCTestCase {
         XCTAssertEqual(result, source.string)
     }
 
-    func testRewriteDocumentWithOverwrappedRewritings() throws {
+    func testRewriteDocumentWithConflictedRewritings() throws {
         let source = Source(string: "type Cat")
         let document = try Document.parsing(source)
 

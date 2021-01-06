@@ -58,7 +58,7 @@ private class RewritingVisitor: Visitor {
 
 enum RewriteError: Error {
     case unavailableSource
-    case overwrappedRanges
+    case conflictedRewritings
 }
 
 extension Document {
@@ -80,7 +80,7 @@ extension Document {
         var upperBound = unicodeScalars.startIndex
         for rewriting in rewritings {
             guard upperBound <= rewriting.range.lowerBound else {
-                throw RewriteError.overwrappedRanges
+                throw RewriteError.conflictedRewritings
             }
             upperBound = rewriting.range.upperBound
         }
