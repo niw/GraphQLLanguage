@@ -521,10 +521,12 @@ extension GraphQLParser.ListTypeContext: Builder {
 extension GraphQLParser.NonNullTypeContext: Builder {
     func build(with buildContext: BuildContext) throws -> NonNullType {
         if let context = namedType() {
-            return .namedType(try context.build(with: buildContext))
+            return NonNullType(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                               typeReference:try context.build(with: buildContext))
         }
         if let context = listType() {
-            return .listType(try context.build(with: buildContext))
+            return NonNullType(context: BuildLanguageContext(buildContext: buildContext, parserRuleContext: self),
+                               typeReference:try context.build(with: buildContext))
         }
         throw BuildError.unexpectedContext(self)
     }

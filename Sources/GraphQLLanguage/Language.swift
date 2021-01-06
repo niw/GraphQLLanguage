@@ -53,6 +53,8 @@ extension NamedType: LanguageNode {
 }
 extension ListType: LanguageNode {
 }
+extension NonNullType: LanguageNode {
+}
 extension Directive: LanguageNode {
 }
 extension SchemaDefinition: LanguageNode {
@@ -305,10 +307,18 @@ public struct ListType {
     public var typeReference: TypeReference
 }
 
-// TODO: Consider to use alternative expression
-public enum NonNullType {
-    case namedType(NamedType)
-    case listType(ListType)
+public protocol NullableTypeReference {
+}
+
+extension NamedType: NullableTypeReference {
+}
+extension ListType: NullableTypeReference {
+}
+
+public struct NonNullType {
+    var context: LanguageContext?
+
+    public var typeReference: NullableTypeReference
 }
 
 // public struct Directives = [Directive]

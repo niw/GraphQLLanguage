@@ -104,6 +104,8 @@ extension NamedType: Visitable {
 }
 extension ListType: Visitable {
 }
+extension NonNullType: Visitable {
+}
 extension Directive: Visitable {
 }
 extension SchemaDefinition: Visitable {
