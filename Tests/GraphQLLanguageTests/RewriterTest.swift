@@ -29,7 +29,7 @@ final class RewriterTest: XCTestCase {
         let source = Source(string: "type Cat")
         let document = try Document.parsing(source)
 
-        let result = try document.rewrite { rewritable in
+        let result = try document.rewrite { _ in
             return nil
         }
 
