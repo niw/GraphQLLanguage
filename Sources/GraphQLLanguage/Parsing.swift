@@ -26,9 +26,14 @@ extension GraphQLParser {
     }
 }
 
-struct ParseBuildContext: BuildContext {
-    var source: Source
-    var parser: GraphQLParser
+class ParseBuildContext: BuildContext {
+    let source: Source
+    let parser: GraphQLParser
+
+    init(source: Source, parser: GraphQLParser) {
+        self.source = source
+        self.parser = parser
+    }
 }
 
 extension LanguageNode {
