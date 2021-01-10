@@ -18,16 +18,11 @@ let package = Package(
                 "GraphQLLanguage"
             ])
     ],
-    dependencies: [
-        .package(
-            name: "Antlr4",
-            path: "Vendor/antlr4/runtime/Swift")
-    ],
     targets: [
         .target(
             name: "GraphQLLanguage",
             dependencies: [
-                .product(name: "Antlr4-Auto", package: "Antlr4")
+                .target(name: "Antlr4")
             ],
             exclude: [
                 "Generated/GraphQL.interp",
@@ -35,6 +30,10 @@ let package = Package(
                 "Generated/GraphQLLexer.interp",
                 "Generated/GraphQLLexer.tokens"
             ]),
+        .target(
+            name: "Antlr4",
+            dependencies: [],
+            path: "Vendor/antlr4/runtime/Swift/Sources/Antlr4"),
         .testTarget(
             name: "GraphQLLanguageTests",
             dependencies: [
