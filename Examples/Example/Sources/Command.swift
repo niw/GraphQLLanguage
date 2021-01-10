@@ -11,36 +11,46 @@ import GraphQLLanguage
 
 @main
 struct Command: ParsableCommand {
-    @Option(name: .shortAndLong, help: "Path to the GraphQL file")
-    var file: String
+    static var configuration = CommandConfiguration(
+        abstract: "An example command-line tool for using GraphQLLanguage package",
+        subcommands: [
+            Parse.self,
+            RemoveDirectives.self],
+        defaultSubcommand: Parse.self)
 
-    enum Action: EnumerableFlag {
-        case parse
-        case removeDirectives
+    struct CommonOptions: ParsableArguments {
+        @Option(name: .shortAndLong, help: "Path to the GraphQL file")
+        var file: String
+    }
+}
 
-        static func help(for value: Command.Action) -> ArgumentHelp? {
-            switch value {
-            case .parse:
-                return "Parse given GraphQL file and print each defintion"
-            case .removeDirectives:
-                return "Rewrite given GraphQL file and print the one without any directives"
+extension Command {
+    struct Parse: ParsableCommand {
+        static var configuration = CommandConfiguration(
+            abstract: "Parse given GraphQL file and print each defintion")
+
+        @OptionGroup
+        var options: CommonOptions
+
+        mutating func run() throws {
+            let source = try Source(atPath: options.file)
+            let document = try Document.parsing(source)
+            for definition in document.definitions {
+                print(definition)
             }
         }
     }
 
-    @Flag(help: "Action for the GraphQL file")
-    var action: Action
+    struct RemoveDirectives: ParsableCommand {
+        static var configuration = CommandConfiguration(
+            abstract: "Rewrite given GraphQL file and print the one without any directives")
 
-    mutating func run() throws {
-        let source = try Source(atPath: file)
-        let document = try Document.parsing(source)
+        @OptionGroup
+        var options: CommonOptions
 
-        switch action {
-        case .parse:
-            for definition in document.definitions {
-                print(definition)
-            }
-        case .removeDirectives:
+        mutating func run() throws {
+            let source = try Source(atPath: options.file)
+            let document = try Document.parsing(source)
             let result = try document.rewrite { rewritable in
                 switch rewritable {
                 case is Directive:
