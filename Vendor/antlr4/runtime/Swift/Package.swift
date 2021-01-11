@@ -17,8 +17,5 @@ let package = Package(
         .target(
             name: "Antlr4",
             dependencies: []),
-        .testTarget(
-            name: "Antlr4Tests",
-            dependencies: ["Antlr4"]),
     ]
 )
