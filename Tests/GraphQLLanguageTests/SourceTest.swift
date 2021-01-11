@@ -11,21 +11,23 @@ import XCTest
 final class SourceTest: XCTestCase {
     func testSourceUnicodeScalars() throws {
         let source = Source(string: "type Cat @meow")
-        let sourceUnicodeScalars = source.string.unicodeScalars
+        let sourceUnicodeScalars = source.unicodeScalars
         let document = try Document.parsing(source)
 
         let objectTypeDefinition = try XCTUnwrap(document.definitions.first as? ObjectTypeDefinition)
-        let objectTypeDefinitionSubSequence = try XCTUnwrap(objectTypeDefinition.sourceUnicodeScalars)
+        let objectTypeDefinitionRange = try XCTUnwrap(objectTypeDefinition.sourceRange)
+        let objectTypeDefinitionString = try XCTUnwrap(objectTypeDefinition.sourceString)
 
-        XCTAssertEqual(objectTypeDefinitionSubSequence.startIndex, sourceUnicodeScalars.startIndex)
-        XCTAssertEqual(objectTypeDefinitionSubSequence.endIndex, sourceUnicodeScalars.endIndex)
-        XCTAssertEqual(String(objectTypeDefinitionSubSequence), "type Cat @meow")
+        XCTAssertEqual(objectTypeDefinitionRange.startIndex, sourceUnicodeScalars.startIndex)
+        XCTAssertEqual(objectTypeDefinitionRange.endIndex, sourceUnicodeScalars.endIndex)
+        XCTAssertEqual(objectTypeDefinitionString, "type Cat @meow")
 
         let directive = try XCTUnwrap(objectTypeDefinition.directives?.first)
-        let directiveSubSequence = try XCTUnwrap(directive.sourceUnicodeScalars)
+        let directiveRange = try XCTUnwrap(directive.sourceRange)
+        let directiveString = try XCTUnwrap(directive.sourceString)
 
-        XCTAssertEqual(directiveSubSequence.startIndex, sourceUnicodeScalars.index(sourceUnicodeScalars.startIndex, offsetBy: 9))
-        XCTAssertEqual(directiveSubSequence.endIndex, sourceUnicodeScalars.endIndex)
-        XCTAssertEqual(String(directiveSubSequence), "@meow")
+        XCTAssertEqual(directiveRange.startIndex, sourceUnicodeScalars.index(sourceUnicodeScalars.startIndex, offsetBy: 9))
+        XCTAssertEqual(directiveRange.endIndex, sourceUnicodeScalars.endIndex)
+        XCTAssertEqual(directiveString, "@meow")
     }
 }

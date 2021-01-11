@@ -27,7 +27,7 @@ private extension Collection {
 
 private class RewritingVisitor: Visitor {
     struct Rewriting {
-        let range: Range<String.UnicodeScalarView.Index>
+        let range: Range<Int>
         let string: String
     }
 
@@ -39,7 +39,7 @@ private class RewritingVisitor: Visitor {
     }
 
     func visit(on visitable: Visitable) {
-        guard let sourceUnicodeScalars = visitable.sourceUnicodeScalars else {
+        guard let sourceRange = visitable.sourceRange else {
             return
         }
 
@@ -47,7 +47,7 @@ private class RewritingVisitor: Visitor {
             return
         }
 
-        let rewriting = Rewriting(range: sourceUnicodeScalars.range, string: rewritingString)
+        let rewriting = Rewriting(range: sourceRange, string: rewritingString)
         rewritings.append(rewriting)
     }
 }
@@ -62,7 +62,7 @@ extension Document {
         guard let source = source else {
             throw RewriteError.unavailableSource
         }
-        var unicodeScalars = source.string.unicodeScalars
+        var unicodeScalars = source.unicodeScalars
 
         let rewritingVisitor = RewritingVisitor(rewriter: rewriter)
         visit(with: rewritingVisitor)

@@ -8,20 +8,22 @@
 import Antlr4
 
 public struct Source {
-    public var string: String
+    public let string: String
+    let unicodeScalars: [UnicodeScalar]
+
     public var name: String?
 
     public init(string: String) {
         self.string = string
+        self.unicodeScalars = Array(string.unicodeScalars)
     }
 
     public init(atPath path: String, encoding: String.Encoding = .utf8) throws {
-        name = path
-        string = try String(contentsOfFile: path, encoding: encoding)
+        self.init(string: try String(contentsOfFile: path, encoding: encoding))
     }
 
     func inputStream() -> ANTLRInputStream {
-        let inputStream = ANTLRInputStream(string)
+        let inputStream = ANTLRInputStream(unicodeScalars, unicodeScalars.count)
         inputStream.name = name
         return inputStream
     }
@@ -34,18 +36,21 @@ extension Document {
 }
 
 extension LanguageNode {
-    public var sourceUnicodeScalars: String.UnicodeScalarView.SubSequence? {
+    var sourceRange: Range<Array<UnicodeScalar>.Index>? {
         guard let parserRuleContext = buildLanguageContext?.parserRuleContext,
-              let source = parseBuildContext?.source,
               let startOffset = parserRuleContext.getStart()?.getStartIndex(),
               let endOffset = parserRuleContext.getStop()?.getStopIndex()
         else {
             return nil
         }
+        return startOffset..<endOffset + 1
+    }
 
-        let unicodeScalars = source.string.unicodeScalars
-        let startIndex = unicodeScalars.index(unicodeScalars.startIndex, offsetBy: startOffset)
-        let endIndex = unicodeScalars.index(unicodeScalars.startIndex, offsetBy: endOffset)
-        return unicodeScalars[startIndex...endIndex]
+    public var sourceString: String? {
+        guard let source = parseBuildContext?.source, let range = sourceRange else {
+            return nil
+        }
+
+        return String(source.unicodeScalars[range])
     }
 }
