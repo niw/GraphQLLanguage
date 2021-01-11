@@ -21,8 +21,7 @@ public struct Source {
     }
 
     func inputStream() -> ANTLRInputStream {
-        let unicodeScalars = string.unicodeScalars
-        let inputStream = ANTLRInputStream(unicodeScalars, unicodeScalars.count)
+        let inputStream = ANTLRInputStream(string)
         inputStream.name = name
         return inputStream
     }
