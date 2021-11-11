@@ -104,6 +104,14 @@ public struct Document {
     public var context: LanguageContext?
 
     public var definitions: [Definition]
+
+    public init(
+        context: LanguageContext? = nil,
+        definitions: [Definition]
+    ) {
+        self.context = context
+        self.definitions = definitions
+    }
 }
 
 // See `ExecutableDefinition`, `TypeSystemDefinition`, and `TypeSystemExtension`.
@@ -126,6 +134,22 @@ public struct OperationDefinition {
     public var variableDefinitions: [VariableDefinition]?
     public var directives: [Directive]?
     public var selectionSet: [Selection]
+
+    public init(
+        context: LanguageContext? = nil,
+        operationType: OperationType,
+        name: String? = nil,
+        variableDefinitions: [VariableDefinition]? = nil,
+        directives: [Directive]? = nil,
+        selectionSet: [Selection]
+    ) {
+        self.context = context
+        self.operationType = operationType
+        self.name = name
+        self.variableDefinitions = variableDefinitions
+        self.directives = directives
+        self.selectionSet = selectionSet
+    }
 }
 
 public enum OperationType: String {
@@ -154,6 +178,22 @@ public struct Field {
     public var arguments: [Argument]?
     public var directives: [Directive]?
     public var selectionSet: [Selection]?
+
+    public init(
+        context: LanguageContext? = nil,
+        alias: String? = nil,
+        name: String,
+        arguments: [Argument]? = nil,
+        directives: [Directive]? = nil,
+        selectionSet: [Selection]? = nil
+    ) {
+        self.context = context
+        self.alias = alias
+        self.name = name
+        self.arguments = arguments
+        self.directives = directives
+        self.selectionSet = selectionSet
+    }
 }
 
 // public struct Arguments = [Argument]
@@ -163,6 +203,16 @@ public struct Argument {
 
     public var name: String
     public var value: Value
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        value: Value
+    ) {
+        self.context = context
+        self.name = name
+        self.value = value
+    }
 }
 
 // public struct Alias // Not used
@@ -172,6 +222,16 @@ public struct FragmentSpread {
 
     public var fragmentName: String
     public var directives: [Directive]?
+
+    public init(
+        context: LanguageContext? = nil,
+        fragmentName: String,
+        directives: [Directive]? = nil
+    ) {
+        self.context = context
+        self.fragmentName = fragmentName
+        self.directives = directives
+    }
 }
 
 public struct FragmentDefinition {
@@ -181,6 +241,20 @@ public struct FragmentDefinition {
     public var typeCondition: NamedType
     public var directives: [Directive]?
     public var selectionSet: [Selection]
+
+    public init(
+        context: LanguageContext? = nil,
+        fragmentName: String,
+        typeCondition: NamedType,
+        directives: [Directive]? = nil,
+        selectionSet: [Selection]
+    ) {
+        self.context = context
+        self.fragmentName = fragmentName
+        self.typeCondition = typeCondition
+        self.directives = directives
+        self.selectionSet = selectionSet
+    }
 }
 
 // public struct FragmentName = String
@@ -193,6 +267,18 @@ public struct InlineFragment {
     public var typeCondition: NamedType?
     public var directives: [Directive]?
     public var selectionSet: [Selection]
+
+    public init(
+        context: LanguageContext? = nil,
+        typeCondition: NamedType? = nil,
+        directives: [Directive]? = nil,
+        selectionSet: [Selection]
+    ) {
+        self.context = context
+        self.typeCondition = typeCondition
+        self.directives = directives
+        self.selectionSet = selectionSet
+    }
 }
 
 public protocol Value {
@@ -222,6 +308,14 @@ public struct IntValue {
 
     // GraphQL `Int` is a signed 32‐bit integer.
     public var intValue: Int32
+
+    public init(
+        context: LanguageContext? = nil,
+        intValue: Int32
+    ) {
+        self.context = context
+        self.intValue = intValue
+    }
 }
 
 public struct FloatValue {
@@ -229,40 +323,94 @@ public struct FloatValue {
 
     // GraphQL `Float` is a signed double‐precision.
     public var floatValue: Double
+
+    public init(
+        context: LanguageContext? = nil,
+        floatValue: Double
+    ) {
+        self.context = context
+        self.floatValue = floatValue
+    }
 }
 
 public struct BooleanValue {
     public var context: LanguageContext?
 
     public var booleanValue: Bool
+
+    public init(
+        context: LanguageContext? = nil,
+        booleanValue: Bool
+    ) {
+        self.context = context
+        self.booleanValue = booleanValue
+    }
 }
 
 public struct StringValue {
     public var context: LanguageContext?
 
     public var stringValue: String
+
+    public init(
+        context: LanguageContext? = nil,
+        stringValue: String
+    ) {
+        self.context = context
+        self.stringValue = stringValue
+    }
 }
 
 public struct NullValue {
     public var context: LanguageContext?
+
+    public init(
+        context: LanguageContext? = nil
+    ) {
+        self.context = context
+    }
 }
 
 public struct EnumValue {
     public var context: LanguageContext?
 
     public var enumValue: String
+
+    public init(
+        context: LanguageContext? = nil,
+        enumValue: String
+    ) {
+        self.context = context
+        self.enumValue = enumValue
+    }
 }
 
 public struct ListValue {
     public var context: LanguageContext?
 
     public var values: [Value]
+
+    public init(
+        context: LanguageContext? = nil,
+        values: [Value]
+    ) {
+        self.context = context
+        self.values = values
+    }
 }
 
 public struct ObjectValue {
     public var context: LanguageContext?
 
     public var objectFields: [String: Value]
+
+    public init(
+        context: LanguageContext? = nil,
+        objectFields: [String : Value]
+    ) {
+        self.context = context
+        self.objectFields = objectFields
+    }
 }
 
 // public struct ObjectField // Not used
@@ -271,6 +419,14 @@ public struct Variable {
     public var context: LanguageContext?
 
     public var name: String
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String
+    ) {
+        self.context = context
+        self.name = name
+    }
 }
 
 // public struct VariableDefinitions = [VariableDefinition]
@@ -281,6 +437,18 @@ public struct VariableDefinition {
     public var variable: Variable
     public var typeReference: TypeReference
     public var defaultValue: Value?
+
+    public init(
+        context: LanguageContext? = nil,
+        variable: Variable,
+        typeReference: TypeReference,
+        defaultValue: Value? = nil
+    ) {
+        self.context = context
+        self.variable = variable
+        self.typeReference = typeReference
+        self.defaultValue = defaultValue
+    }
 }
 
 // public struct DefaultValue = Value
@@ -299,12 +467,28 @@ public struct NamedType {
     public var context: LanguageContext?
 
     public var name: String
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String
+    ) {
+        self.context = context
+        self.name = name
+    }
 }
 
 public struct ListType {
     public var context: LanguageContext?
 
     public var typeReference: TypeReference
+
+    public init(
+        context: LanguageContext? = nil,
+        typeReference: TypeReference
+    ) {
+        self.context = context
+        self.typeReference = typeReference
+    }
 }
 
 public protocol NullableTypeReference {
@@ -319,6 +503,14 @@ public struct NonNullType {
     public var context: LanguageContext?
 
     public var typeReference: NullableTypeReference
+
+    public init(
+        context: LanguageContext? = nil,
+        typeReference: NullableTypeReference
+    ) {
+        self.context = context
+        self.typeReference = typeReference
+    }
 }
 
 // public struct Directives = [Directive]
@@ -328,6 +520,16 @@ public struct Directive {
 
     public var name: String
     public var arguments: [Argument]?
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        arguments: [Argument]? = nil
+    ) {
+        self.context = context
+        self.name = name
+        self.arguments = arguments
+    }
 }
 
 // See `TypeDefinition`
@@ -350,6 +552,16 @@ public struct SchemaDefinition {
 
     public var directives: [Directive]?
     public var rootOperationTypeDefinitions: [RootOperationTypeDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        directives: [Directive]? = nil,
+        rootOperationTypeDefinitions: [RootOperationTypeDefinition]? = nil
+    ) {
+        self.context = context
+        self.directives = directives
+        self.rootOperationTypeDefinitions = rootOperationTypeDefinitions
+    }
 }
 
 public struct RootOperationTypeDefinition {
@@ -357,6 +569,16 @@ public struct RootOperationTypeDefinition {
 
     public var operationType: OperationType
     public var namedType: NamedType
+
+    public init(
+        context: LanguageContext? = nil,
+        operationType: OperationType,
+        namedType: NamedType
+    ) {
+        self.context = context
+        self.operationType = operationType
+        self.namedType = namedType
+    }
 }
 
 public struct SchemaExtension {
@@ -364,6 +586,16 @@ public struct SchemaExtension {
 
     public var directives: [Directive]?
     public var operationTypeDefinitions: [OperationTypeDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        directives: [Directive]? = nil,
+        operationTypeDefinitions: [OperationTypeDefinition]? = nil
+    ) {
+        self.context = context
+        self.directives = directives
+        self.operationTypeDefinitions = operationTypeDefinitions
+    }
 }
 
 public struct OperationTypeDefinition {
@@ -371,12 +603,30 @@ public struct OperationTypeDefinition {
 
     public var operationType: OperationType
     public var namedType: NamedType
+
+    public init(
+        context: LanguageContext? = nil,
+        operationType: OperationType,
+        namedType: NamedType
+    ) {
+        self.context = context
+        self.operationType = operationType
+        self.namedType = namedType
+    }
 }
 
 public struct Description {
     public var context: LanguageContext?
 
     public var stringValue: StringValue
+
+    public init(
+        context: LanguageContext? = nil,
+        stringValue: StringValue
+    ) {
+        self.context = context
+        self.stringValue = stringValue
+    }
 }
 
 public protocol TypeDefinition: TypeSystemDefinition {
@@ -417,6 +667,18 @@ public struct ScalarTypeDefinition {
     public var description: Description?
     public var name: String
     public var directives: [Directive]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        directives: [Directive]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.directives = directives
+    }
 }
 
 public struct ScalarTypeExtension {
@@ -424,6 +686,16 @@ public struct ScalarTypeExtension {
 
     public var name: String
     public var directives: [Directive]
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        directives: [Directive]
+    ) {
+        self.context = context
+        self.name = name
+        self.directives = directives
+    }
 }
 
 public struct ObjectTypeDefinition {
@@ -434,6 +706,22 @@ public struct ObjectTypeDefinition {
     public var implementsInterfaces: [NamedType]?
     public var directives: [Directive]?
     public var fieldsDefinition: [FieldDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        implementsInterfaces: [NamedType]? = nil,
+        directives: [Directive]? = nil,
+        fieldsDefinition: [FieldDefinition]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.implementsInterfaces = implementsInterfaces
+        self.directives = directives
+        self.fieldsDefinition = fieldsDefinition
+    }
 }
 
 // public struct ImplementsInterfaces = [NamedType]
@@ -448,6 +736,22 @@ public struct FieldDefinition {
     public var argumentsDefinition: [InputValueDefinition]?
     public var typeReference: TypeReference
     public var directives: [Directive]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        argumentsDefinition: [InputValueDefinition]? = nil,
+        typeReference: TypeReference,
+        directives: [Directive]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.argumentsDefinition = argumentsDefinition
+        self.typeReference = typeReference
+        self.directives = directives
+    }
 }
 
 // public struct ArgumentsDefinition = [InputValueDefinition]
@@ -460,6 +764,22 @@ public struct InputValueDefinition {
     public var typeReference: TypeReference
     public var defaultValue: Value?
     public var directives: [Directive]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        typeReference: TypeReference,
+        defaultValue: Value? = nil,
+        directives: [Directive]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.typeReference = typeReference
+        self.defaultValue = defaultValue
+        self.directives = directives
+    }
 }
 
 public struct ObjectTypeExtension {
@@ -469,6 +789,20 @@ public struct ObjectTypeExtension {
     public var implementsInterfaces: [NamedType]?
     public var directives: [Directive]?
     public var fieldsDefinition: [FieldDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        implementsInterfaces: [NamedType]? = nil,
+        directives: [Directive]? = nil,
+        fieldsDefinition: [FieldDefinition]? = nil
+    ) {
+        self.context = context
+        self.name = name
+        self.implementsInterfaces = implementsInterfaces
+        self.directives = directives
+        self.fieldsDefinition = fieldsDefinition
+    }
 }
 
 public struct InterfaceTypeDefinition {
@@ -478,6 +812,20 @@ public struct InterfaceTypeDefinition {
     public var name: String
     public var directives: [Directive]?
     public var fieldsDefinition: [FieldDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        fieldsDefinition: [FieldDefinition]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.directives = directives
+        self.fieldsDefinition = fieldsDefinition
+    }
 }
 
 public struct InterfaceTypeExtension {
@@ -486,6 +834,18 @@ public struct InterfaceTypeExtension {
     public var name: String
     public var directives: [Directive]?
     public var fieldsDefinition: [FieldDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        fieldsDefinition: [FieldDefinition]? = nil
+    ) {
+        self.context = context
+        self.name = name
+        self.directives = directives
+        self.fieldsDefinition = fieldsDefinition
+    }
 }
 
 public struct UnionTypeDefinition {
@@ -495,6 +855,20 @@ public struct UnionTypeDefinition {
     public var name: String
     public var directives: [Directive]?
     public var unionMemberTypes: [NamedType]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        unionMemberTypes: [NamedType]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.directives = directives
+        self.unionMemberTypes = unionMemberTypes
+    }
 }
 
 // public struct UnionMemberTypes = [NamedType]
@@ -505,6 +879,18 @@ public struct UnionTypeExtension {
     public var name: String
     public var directives: [Directive]?
     public var unionMemberTypes: [NamedType]?
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        unionMemberTypes: [NamedType]? = nil
+    ) {
+        self.context = context
+        self.name = name
+        self.directives = directives
+        self.unionMemberTypes = unionMemberTypes
+    }
 }
 
 public struct EnumTypeDefinition {
@@ -514,6 +900,20 @@ public struct EnumTypeDefinition {
     public var name: String
     public var directives: [Directive]?
     public var enumValuesDefinition: [EnumValueDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        enumValuesDefinition: [EnumValueDefinition]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.directives = directives
+        self.enumValuesDefinition = enumValuesDefinition
+    }
 }
 
 // public struct  EnumValuesDefinition = [EnumValueDefinition]
@@ -524,6 +924,18 @@ public struct EnumValueDefinition {
     public var description: Description?
     public var enumValue: EnumValue
     public var directives: [Directive]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        enumValue: EnumValue,
+        directives: [Directive]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.enumValue = enumValue
+        self.directives = directives
+    }
 }
 
 public struct EnumTypeExtension {
@@ -532,6 +944,18 @@ public struct EnumTypeExtension {
     public var name: String
     public var directives: [Directive]?
     public var enumValuesDefinition: [EnumValueDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        enumValuesDefinition: [EnumValueDefinition]? = nil
+    ) {
+        self.context = context
+        self.name = name
+        self.directives = directives
+        self.enumValuesDefinition = enumValuesDefinition
+    }
 }
 
 public struct InputObjectTypeDefinition {
@@ -541,6 +965,20 @@ public struct InputObjectTypeDefinition {
     public var name: String
     public var directives: [Directive]?
     public var inputFieldsDefinition: [InputValueDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        inputFieldsDefinition: [InputValueDefinition]? = nil
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.directives = directives
+        self.inputFieldsDefinition = inputFieldsDefinition
+    }
 }
 
 // public struct InputFieldsDefinition = [InputValueDefinition]
@@ -551,6 +989,18 @@ public struct InputObjectTypeExtension {
     public var name: String
     public var directives: [Directive]?
     public var inputFieldsDefinition: [InputValueDefinition]?
+
+    public init(
+        context: LanguageContext? = nil,
+        name: String,
+        directives: [Directive]? = nil,
+        inputFieldsDefinition: [InputValueDefinition]? = nil
+    ) {
+        self.context = context
+        self.name = name
+        self.directives = directives
+        self.inputFieldsDefinition = inputFieldsDefinition
+    }
 }
 
 public struct DirectiveDefinition {
@@ -560,6 +1010,20 @@ public struct DirectiveDefinition {
     public var name: String
     public var argumentsDefinition: [InputValueDefinition]?
     public var directiveLocations: [DirectiveLocation]
+
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        argumentsDefinition: [InputValueDefinition]? = nil,
+        directiveLocations: [DirectiveLocation]
+    ) {
+        self.context = context
+        self.description = description
+        self.name = name
+        self.argumentsDefinition = argumentsDefinition
+        self.directiveLocations = directiveLocations
+    }
 }
 
 // public struct DirectiveLocations = [DirectiveLocation]
