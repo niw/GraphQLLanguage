@@ -894,7 +894,6 @@ public struct UnionTypeExtension {
 }
 
 public struct EnumTypeDefinition {
-
     public var context: LanguageContext?
 
     public var description: Description?
@@ -920,7 +919,6 @@ public struct EnumTypeDefinition {
 // public struct  EnumValuesDefinition = [EnumValueDefinition]
 
 public struct EnumValueDefinition {
-
     public var context: LanguageContext?
 
     public var description: Description?
@@ -1013,11 +1011,12 @@ public struct DirectiveDefinition {
     public var argumentsDefinition: [InputValueDefinition]?
     public var directiveLocations: [DirectiveLocation]
 
-    public init(context: LanguageContext? = nil,
-                description: Description? = nil,
-                name: String,
-                argumentsDefinition: [InputValueDefinition]? = nil,
-                directiveLocations: [DirectiveLocation]
+    public init(
+        context: LanguageContext? = nil,
+        description: Description? = nil,
+        name: String,
+        argumentsDefinition: [InputValueDefinition]? = nil,
+        directiveLocations: [DirectiveLocation]
     ) {
         self.context = context
         self.description = description
