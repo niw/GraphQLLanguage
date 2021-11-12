@@ -406,7 +406,7 @@ public struct ObjectValue {
 
     public init(
         context: LanguageContext? = nil,
-        objectFields: [String : Value]
+        objectFields: [String: Value]
     ) {
         self.context = context
         self.objectFields = objectFields
