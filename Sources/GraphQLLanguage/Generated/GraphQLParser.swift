@@ -1,4 +1,4 @@
-// Generated from Vendor/antlr4-graphql-grammar/src/main/antlr4/GraphQL.g4 by ANTLR 4.9
+// Generated from Vendor/antlr4-graphql-grammar/src/main/antlr4/GraphQL.g4 by ANTLR 4.9.3
 import Antlr4
 
 internal class GraphQLParser: Parser {
@@ -118,7 +118,7 @@ internal class GraphQLParser: Parser {
 
 	override internal
 	init(_ input:TokenStream) throws {
-	    RuntimeMetaData.checkVersion("4.9", RuntimeMetaData.VERSION)
+	    RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION)
 		try super.init(input)
 		_interp = ParserATNSimulator(self,GraphQLParser._ATN,GraphQLParser._decisionToDFA, GraphQLParser._sharedContextCache)
 	}

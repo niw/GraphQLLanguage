@@ -1,4 +1,4 @@
-// Generated from Vendor/antlr4-graphql-grammar/src/main/antlr4/GraphQL.g4 by ANTLR 4.9
+// Generated from Vendor/antlr4-graphql-grammar/src/main/antlr4/GraphQL.g4 by ANTLR 4.9.3
 
 import Antlr4
 

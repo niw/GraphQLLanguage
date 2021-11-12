@@ -1,4 +1,4 @@
-// Generated from Vendor/antlr4-graphql-grammar/src/main/antlr4/GraphQL.g4 by ANTLR 4.9
+// Generated from Vendor/antlr4-graphql-grammar/src/main/antlr4/GraphQL.g4 by ANTLR 4.9.3
 import Antlr4
 
 internal class GraphQLLexer: Lexer {
@@ -77,7 +77,7 @@ internal class GraphQLLexer: Lexer {
 
 	internal
 	required init(_ input: CharStream) {
-	    RuntimeMetaData.checkVersion("4.9", RuntimeMetaData.VERSION)
+	    RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION)
 		super.init(input)
 		_interp = LexerATNSimulator(self, GraphQLLexer._ATN, GraphQLLexer._decisionToDFA, GraphQLLexer._sharedContextCache)
 	}

@@ -4,7 +4,7 @@ JAVA = java
 SWIFT = swift
 SWIFTLINT = swiftlint
 
-ANTLR4_JAR_URL = https://www.antlr.org/download/antlr-4.9-complete.jar
+ANTLR4_JAR_URL = https://www.antlr.org/download/antlr-4.9.3-complete.jar
 ANTLR4_GRAPHQL_GRAMMAR_URL = https://github.com/niw/antlr4-graphql-grammar.git
 
 .PHONY: all
