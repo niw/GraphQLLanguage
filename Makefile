@@ -12,7 +12,7 @@ all: build
 
 .PHONY: clean
 clean:
-	$(GIT) clean -dfX
+	$(GIT) clean -dffX
 
 .PHONY: correct
 correct:
