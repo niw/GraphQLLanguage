@@ -10,3 +10,5 @@ project.xcworkspace/
 /.swiftpm
 /Vendor/antlr4-graphql-grammar
 /antlr4.jar
+/Sources/GraphQLLanguage/Generated/*.interp
+/Sources/GraphQLLanguage/Generated/*.tokens
