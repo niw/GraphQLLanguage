@@ -23,12 +23,6 @@ let package = Package(
             name: "GraphQLLanguage",
             dependencies: [
                 .target(name: "Antlr4")
-            ],
-            exclude: [
-                "Generated/GraphQL.interp",
-                "Generated/GraphQL.tokens",
-                "Generated/GraphQLLexer.interp",
-                "Generated/GraphQLLexer.tokens"
             ]),
         .target(
             name: "Antlr4",
