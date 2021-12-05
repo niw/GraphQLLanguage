@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.2.1
+-----
+
+Minor changes to suppress various warnings.
+
+- Suppress warnings in ANTLR generated code (#3).
+- Remove excluded resources causing warnings (#2).
+
 0.2.0
 -----
 
