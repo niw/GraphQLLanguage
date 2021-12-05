@@ -152,7 +152,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func document() throws -> DocumentContext {
-		var _localctx: DocumentContext = DocumentContext(_ctx, getState())
+		let _localctx: DocumentContext = DocumentContext(_ctx, getState())
 		try enterRule(_localctx, 0, GraphQLParser.RULE_document)
 		var _la: Int = 0
 		defer {
@@ -222,7 +222,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func definition() throws -> DefinitionContext {
-		var _localctx: DefinitionContext = DefinitionContext(_ctx, getState())
+		let _localctx: DefinitionContext = DefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 2, GraphQLParser.RULE_definition)
 		defer {
 	    		try! exitRule()
@@ -303,7 +303,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func executableDefinition() throws -> ExecutableDefinitionContext {
-		var _localctx: ExecutableDefinitionContext = ExecutableDefinitionContext(_ctx, getState())
+		let _localctx: ExecutableDefinitionContext = ExecutableDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 4, GraphQLParser.RULE_executableDefinition)
 		defer {
 	    		try! exitRule()
@@ -381,7 +381,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func operationDefinition() throws -> OperationDefinitionContext {
-		var _localctx: OperationDefinitionContext = OperationDefinitionContext(_ctx, getState())
+		let _localctx: OperationDefinitionContext = OperationDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 6, GraphQLParser.RULE_operationDefinition)
 		var _la: Int = 0
 		defer {
@@ -495,7 +495,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func operationType() throws -> OperationTypeContext {
-		var _localctx: OperationTypeContext = OperationTypeContext(_ctx, getState())
+		let _localctx: OperationTypeContext = OperationTypeContext(_ctx, getState())
 		try enterRule(_localctx, 8, GraphQLParser.RULE_operationType)
 		var _la: Int = 0
 		defer {
@@ -558,7 +558,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func selectionSet() throws -> SelectionSetContext {
-		var _localctx: SelectionSetContext = SelectionSetContext(_ctx, getState())
+		let _localctx: SelectionSetContext = SelectionSetContext(_ctx, getState())
 		try enterRule(_localctx, 10, GraphQLParser.RULE_selectionSet)
 		var _la: Int = 0
 		defer {
@@ -632,7 +632,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func selection() throws -> SelectionContext {
-		var _localctx: SelectionContext = SelectionContext(_ctx, getState())
+		let _localctx: SelectionContext = SelectionContext(_ctx, getState())
 		try enterRule(_localctx, 12, GraphQLParser.RULE_selection)
 		defer {
 	    		try! exitRule()
@@ -711,7 +711,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func field() throws -> FieldContext {
-		var _localctx: FieldContext = FieldContext(_ctx, getState())
+		let _localctx: FieldContext = FieldContext(_ctx, getState())
 		try enterRule(_localctx, 14, GraphQLParser.RULE_field)
 		var _la: Int = 0
 		defer {
@@ -809,7 +809,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func arguments() throws -> ArgumentsContext {
-		var _localctx: ArgumentsContext = ArgumentsContext(_ctx, getState())
+		let _localctx: ArgumentsContext = ArgumentsContext(_ctx, getState())
 		try enterRule(_localctx, 16, GraphQLParser.RULE_arguments)
 		var _la: Int = 0
 		defer {
@@ -879,7 +879,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func argument() throws -> ArgumentContext {
-		var _localctx: ArgumentContext = ArgumentContext(_ctx, getState())
+		let _localctx: ArgumentContext = ArgumentContext(_ctx, getState())
 		try enterRule(_localctx, 18, GraphQLParser.RULE_argument)
 		defer {
 	    		try! exitRule()
@@ -927,7 +927,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func alias() throws -> AliasContext {
-		var _localctx: AliasContext = AliasContext(_ctx, getState())
+		let _localctx: AliasContext = AliasContext(_ctx, getState())
 		try enterRule(_localctx, 20, GraphQLParser.RULE_alias)
 		defer {
 	    		try! exitRule()
@@ -977,7 +977,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func fragmentSpread() throws -> FragmentSpreadContext {
-		var _localctx: FragmentSpreadContext = FragmentSpreadContext(_ctx, getState())
+		let _localctx: FragmentSpreadContext = FragmentSpreadContext(_ctx, getState())
 		try enterRule(_localctx, 22, GraphQLParser.RULE_fragmentSpread)
 		var _la: Int = 0
 		defer {
@@ -1053,7 +1053,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func fragmentDefinition() throws -> FragmentDefinitionContext {
-		var _localctx: FragmentDefinitionContext = FragmentDefinitionContext(_ctx, getState())
+		let _localctx: FragmentDefinitionContext = FragmentDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 24, GraphQLParser.RULE_fragmentDefinition)
 		var _la: Int = 0
 		defer {
@@ -1129,7 +1129,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func fragmentName() throws -> FragmentNameContext {
-		var _localctx: FragmentNameContext = FragmentNameContext(_ctx, getState())
+		let _localctx: FragmentNameContext = FragmentNameContext(_ctx, getState())
 		try enterRule(_localctx, 26, GraphQLParser.RULE_fragmentName)
 		defer {
 	    		try! exitRule()
@@ -1222,7 +1222,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func typeCondition() throws -> TypeConditionContext {
-		var _localctx: TypeConditionContext = TypeConditionContext(_ctx, getState())
+		let _localctx: TypeConditionContext = TypeConditionContext(_ctx, getState())
 		try enterRule(_localctx, 28, GraphQLParser.RULE_typeCondition)
 		defer {
 	    		try! exitRule()
@@ -1276,7 +1276,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func inlineFragment() throws -> InlineFragmentContext {
-		var _localctx: InlineFragmentContext = InlineFragmentContext(_ctx, getState())
+		let _localctx: InlineFragmentContext = InlineFragmentContext(_ctx, getState())
 		try enterRule(_localctx, 30, GraphQLParser.RULE_inlineFragment)
 		var _la: Int = 0
 		defer {
@@ -1381,7 +1381,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func value() throws -> ValueContext {
-		var _localctx: ValueContext = ValueContext(_ctx, getState())
+		let _localctx: ValueContext = ValueContext(_ctx, getState())
 		try enterRule(_localctx, 32, GraphQLParser.RULE_value)
 		defer {
 	    		try! exitRule()
@@ -1505,7 +1505,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func intValue() throws -> IntValueContext {
-		var _localctx: IntValueContext = IntValueContext(_ctx, getState())
+		let _localctx: IntValueContext = IntValueContext(_ctx, getState())
 		try enterRule(_localctx, 34, GraphQLParser.RULE_intValue)
 		defer {
 	    		try! exitRule()
@@ -1549,7 +1549,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func floatValue() throws -> FloatValueContext {
-		var _localctx: FloatValueContext = FloatValueContext(_ctx, getState())
+		let _localctx: FloatValueContext = FloatValueContext(_ctx, getState())
 		try enterRule(_localctx, 36, GraphQLParser.RULE_floatValue)
 		defer {
 	    		try! exitRule()
@@ -1597,7 +1597,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func booleanValue() throws -> BooleanValueContext {
-		var _localctx: BooleanValueContext = BooleanValueContext(_ctx, getState())
+		let _localctx: BooleanValueContext = BooleanValueContext(_ctx, getState())
 		try enterRule(_localctx, 38, GraphQLParser.RULE_booleanValue)
 		var _la: Int = 0
 		defer {
@@ -1653,7 +1653,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func stringValue() throws -> StringValueContext {
-		var _localctx: StringValueContext = StringValueContext(_ctx, getState())
+		let _localctx: StringValueContext = StringValueContext(_ctx, getState())
 		try enterRule(_localctx, 40, GraphQLParser.RULE_stringValue)
 		defer {
 	    		try! exitRule()
@@ -1697,7 +1697,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func nullValue() throws -> NullValueContext {
-		var _localctx: NullValueContext = NullValueContext(_ctx, getState())
+		let _localctx: NullValueContext = NullValueContext(_ctx, getState())
 		try enterRule(_localctx, 42, GraphQLParser.RULE_nullValue)
 		defer {
 	    		try! exitRule()
@@ -1745,7 +1745,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func enumValue() throws -> EnumValueContext {
-		var _localctx: EnumValueContext = EnumValueContext(_ctx, getState())
+		let _localctx: EnumValueContext = EnumValueContext(_ctx, getState())
 		try enterRule(_localctx, 44, GraphQLParser.RULE_enumValue)
 		defer {
 	    		try! exitRule()
@@ -1824,7 +1824,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func listValue() throws -> ListValueContext {
-		var _localctx: ListValueContext = ListValueContext(_ctx, getState())
+		let _localctx: ListValueContext = ListValueContext(_ctx, getState())
 		try enterRule(_localctx, 46, GraphQLParser.RULE_listValue)
 		var _la: Int = 0
 		defer {
@@ -1909,7 +1909,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func objectValue() throws -> ObjectValueContext {
-		var _localctx: ObjectValueContext = ObjectValueContext(_ctx, getState())
+		let _localctx: ObjectValueContext = ObjectValueContext(_ctx, getState())
 		try enterRule(_localctx, 48, GraphQLParser.RULE_objectValue)
 		var _la: Int = 0
 		defer {
@@ -1994,7 +1994,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func objectField() throws -> ObjectFieldContext {
-		var _localctx: ObjectFieldContext = ObjectFieldContext(_ctx, getState())
+		let _localctx: ObjectFieldContext = ObjectFieldContext(_ctx, getState())
 		try enterRule(_localctx, 50, GraphQLParser.RULE_objectField)
 		defer {
 	    		try! exitRule()
@@ -2042,7 +2042,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func variable() throws -> VariableContext {
-		var _localctx: VariableContext = VariableContext(_ctx, getState())
+		let _localctx: VariableContext = VariableContext(_ctx, getState())
 		try enterRule(_localctx, 52, GraphQLParser.RULE_variable)
 		defer {
 	    		try! exitRule()
@@ -2092,7 +2092,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func variableDefinitions() throws -> VariableDefinitionsContext {
-		var _localctx: VariableDefinitionsContext = VariableDefinitionsContext(_ctx, getState())
+		let _localctx: VariableDefinitionsContext = VariableDefinitionsContext(_ctx, getState())
 		try enterRule(_localctx, 54, GraphQLParser.RULE_variableDefinitions)
 		var _la: Int = 0
 		defer {
@@ -2163,7 +2163,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func variableDefinition() throws -> VariableDefinitionContext {
-		var _localctx: VariableDefinitionContext = VariableDefinitionContext(_ctx, getState())
+		let _localctx: VariableDefinitionContext = VariableDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 56, GraphQLParser.RULE_variableDefinition)
 		var _la: Int = 0
 		defer {
@@ -2225,7 +2225,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func defaultValue() throws -> DefaultValueContext {
-		var _localctx: DefaultValueContext = DefaultValueContext(_ctx, getState())
+		let _localctx: DefaultValueContext = DefaultValueContext(_ctx, getState())
 		try enterRule(_localctx, 58, GraphQLParser.RULE_defaultValue)
 		defer {
 	    		try! exitRule()
@@ -2279,7 +2279,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func typeReference() throws -> TypeReferenceContext {
-		var _localctx: TypeReferenceContext = TypeReferenceContext(_ctx, getState())
+		let _localctx: TypeReferenceContext = TypeReferenceContext(_ctx, getState())
 		try enterRule(_localctx, 60, GraphQLParser.RULE_typeReference)
 		defer {
 	    		try! exitRule()
@@ -2342,7 +2342,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func namedType() throws -> NamedTypeContext {
-		var _localctx: NamedTypeContext = NamedTypeContext(_ctx, getState())
+		let _localctx: NamedTypeContext = NamedTypeContext(_ctx, getState())
 		try enterRule(_localctx, 62, GraphQLParser.RULE_namedType)
 		defer {
 	    		try! exitRule()
@@ -2386,7 +2386,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func listType() throws -> ListTypeContext {
-		var _localctx: ListTypeContext = ListTypeContext(_ctx, getState())
+		let _localctx: ListTypeContext = ListTypeContext(_ctx, getState())
 		try enterRule(_localctx, 64, GraphQLParser.RULE_listType)
 		defer {
 	    		try! exitRule()
@@ -2438,7 +2438,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func nonNullType() throws -> NonNullTypeContext {
-		var _localctx: NonNullTypeContext = NonNullTypeContext(_ctx, getState())
+		let _localctx: NonNullTypeContext = NonNullTypeContext(_ctx, getState())
 		try enterRule(_localctx, 66, GraphQLParser.RULE_nonNullType)
 		defer {
 	    		try! exitRule()
@@ -2525,7 +2525,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func directives() throws -> DirectivesContext {
-		var _localctx: DirectivesContext = DirectivesContext(_ctx, getState())
+		let _localctx: DirectivesContext = DirectivesContext(_ctx, getState())
 		try enterRule(_localctx, 68, GraphQLParser.RULE_directives)
 		var _la: Int = 0
 		defer {
@@ -2588,7 +2588,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func directive() throws -> DirectiveContext {
-		var _localctx: DirectiveContext = DirectiveContext(_ctx, getState())
+		let _localctx: DirectiveContext = DirectiveContext(_ctx, getState())
 		try enterRule(_localctx, 70, GraphQLParser.RULE_directive)
 		var _la: Int = 0
 		defer {
@@ -2656,7 +2656,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func typeSystemDefinition() throws -> TypeSystemDefinitionContext {
-		var _localctx: TypeSystemDefinitionContext = TypeSystemDefinitionContext(_ctx, getState())
+		let _localctx: TypeSystemDefinitionContext = TypeSystemDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 72, GraphQLParser.RULE_typeSystemDefinition)
 		defer {
 	    		try! exitRule()
@@ -2723,7 +2723,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func typeSystemExtension() throws -> TypeSystemExtensionContext {
-		var _localctx: TypeSystemExtensionContext = TypeSystemExtensionContext(_ctx, getState())
+		let _localctx: TypeSystemExtensionContext = TypeSystemExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 74, GraphQLParser.RULE_typeSystemExtension)
 		defer {
 	    		try! exitRule()
@@ -2792,7 +2792,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func schemaDefinition() throws -> SchemaDefinitionContext {
-		var _localctx: SchemaDefinitionContext = SchemaDefinitionContext(_ctx, getState())
+		let _localctx: SchemaDefinitionContext = SchemaDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 76, GraphQLParser.RULE_schemaDefinition)
 		var _la: Int = 0
 		defer {
@@ -2877,7 +2877,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func rootOperationTypeDefinition() throws -> RootOperationTypeDefinitionContext {
-		var _localctx: RootOperationTypeDefinitionContext = RootOperationTypeDefinitionContext(_ctx, getState())
+		let _localctx: RootOperationTypeDefinitionContext = RootOperationTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 78, GraphQLParser.RULE_rootOperationTypeDefinition)
 		defer {
 	    		try! exitRule()
@@ -2941,7 +2941,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func schemaExtension() throws -> SchemaExtensionContext {
-		var _localctx: SchemaExtensionContext = SchemaExtensionContext(_ctx, getState())
+		let _localctx: SchemaExtensionContext = SchemaExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 80, GraphQLParser.RULE_schemaExtension)
 		var _la: Int = 0
 		defer {
@@ -3045,7 +3045,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func operationTypeDefinition() throws -> OperationTypeDefinitionContext {
-		var _localctx: OperationTypeDefinitionContext = OperationTypeDefinitionContext(_ctx, getState())
+		let _localctx: OperationTypeDefinitionContext = OperationTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 82, GraphQLParser.RULE_operationTypeDefinition)
 		defer {
 	    		try! exitRule()
@@ -3093,7 +3093,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func description() throws -> DescriptionContext {
-		var _localctx: DescriptionContext = DescriptionContext(_ctx, getState())
+		let _localctx: DescriptionContext = DescriptionContext(_ctx, getState())
 		try enterRule(_localctx, 84, GraphQLParser.RULE_description)
 		defer {
 	    		try! exitRule()
@@ -3157,7 +3157,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func typeDefinition() throws -> TypeDefinitionContext {
-		var _localctx: TypeDefinitionContext = TypeDefinitionContext(_ctx, getState())
+		let _localctx: TypeDefinitionContext = TypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 86, GraphQLParser.RULE_typeDefinition)
 		defer {
 	    		try! exitRule()
@@ -3258,7 +3258,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func typeExtension() throws -> TypeExtensionContext {
-		var _localctx: TypeExtensionContext = TypeExtensionContext(_ctx, getState())
+		let _localctx: TypeExtensionContext = TypeExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 88, GraphQLParser.RULE_typeExtension)
 		defer {
 	    		try! exitRule()
@@ -3351,7 +3351,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func scalarTypeDefinition() throws -> ScalarTypeDefinitionContext {
-		var _localctx: ScalarTypeDefinitionContext = ScalarTypeDefinitionContext(_ctx, getState())
+		let _localctx: ScalarTypeDefinitionContext = ScalarTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 90, GraphQLParser.RULE_scalarTypeDefinition)
 		var _la: Int = 0
 		defer {
@@ -3436,7 +3436,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func scalarTypeExtension() throws -> ScalarTypeExtensionContext {
-		var _localctx: ScalarTypeExtensionContext = ScalarTypeExtensionContext(_ctx, getState())
+		let _localctx: ScalarTypeExtensionContext = ScalarTypeExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 92, GraphQLParser.RULE_scalarTypeExtension)
 		defer {
 	    		try! exitRule()
@@ -3506,7 +3506,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func objectTypeDefinition() throws -> ObjectTypeDefinitionContext {
-		var _localctx: ObjectTypeDefinitionContext = ObjectTypeDefinitionContext(_ctx, getState())
+		let _localctx: ObjectTypeDefinitionContext = ObjectTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 94, GraphQLParser.RULE_objectTypeDefinition)
 		var _la: Int = 0
 		defer {
@@ -3618,7 +3618,6 @@ internal class GraphQLParser: Parser {
 		let _parentctx: ParserRuleContext? = _ctx
 		let _parentState: Int = getState()
 		var _localctx: ImplementsInterfacesContext = ImplementsInterfacesContext(_ctx, _parentState)
-		var _prevctx: ImplementsInterfacesContext = _localctx
 		let _startState: Int = 96
 		try enterRecursionRule(_localctx, 96, GraphQLParser.RULE_implementsInterfaces, _p)
 		var _la: Int = 0
@@ -3655,7 +3654,6 @@ internal class GraphQLParser: Parser {
 					if _parseListeners != nil {
 					   try triggerExitRuleEvent()
 					}
-					_prevctx = _localctx
 					_localctx = ImplementsInterfacesContext(_parentctx, _parentState);
 					try pushNewRecursionContext(_localctx, _startState, GraphQLParser.RULE_implementsInterfaces)
 					setState(450)
@@ -3712,7 +3710,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func fieldsDefinition() throws -> FieldsDefinitionContext {
-		var _localctx: FieldsDefinitionContext = FieldsDefinitionContext(_ctx, getState())
+		let _localctx: FieldsDefinitionContext = FieldsDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 98, GraphQLParser.RULE_fieldsDefinition)
 		var _la: Int = 0
 		defer {
@@ -3794,7 +3792,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func fieldDefinition() throws -> FieldDefinitionContext {
-		var _localctx: FieldDefinitionContext = FieldDefinitionContext(_ctx, getState())
+		let _localctx: FieldDefinitionContext = FieldDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 100, GraphQLParser.RULE_fieldDefinition)
 		var _la: Int = 0
 		defer {
@@ -3886,7 +3884,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func argumentsDefinition() throws -> ArgumentsDefinitionContext {
-		var _localctx: ArgumentsDefinitionContext = ArgumentsDefinitionContext(_ctx, getState())
+		let _localctx: ArgumentsDefinitionContext = ArgumentsDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 102, GraphQLParser.RULE_argumentsDefinition)
 		var _la: Int = 0
 		defer {
@@ -3968,7 +3966,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func inputValueDefinition() throws -> InputValueDefinitionContext {
-		var _localctx: InputValueDefinitionContext = InputValueDefinitionContext(_ctx, getState())
+		let _localctx: InputValueDefinitionContext = InputValueDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 104, GraphQLParser.RULE_inputValueDefinition)
 		var _la: Int = 0
 		defer {
@@ -4076,7 +4074,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func objectTypeExtension() throws -> ObjectTypeExtensionContext {
-		var _localctx: ObjectTypeExtensionContext = ObjectTypeExtensionContext(_ctx, getState())
+		let _localctx: ObjectTypeExtensionContext = ObjectTypeExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 106, GraphQLParser.RULE_objectTypeExtension)
 		var _la: Int = 0
 		defer {
@@ -4213,7 +4211,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func interfaceTypeDefinition() throws -> InterfaceTypeDefinitionContext {
-		var _localctx: InterfaceTypeDefinitionContext = InterfaceTypeDefinitionContext(_ctx, getState())
+		let _localctx: InterfaceTypeDefinitionContext = InterfaceTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 108, GraphQLParser.RULE_interfaceTypeDefinition)
 		var _la: Int = 0
 		defer {
@@ -4312,7 +4310,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func interfaceTypeExtension() throws -> InterfaceTypeExtensionContext {
-		var _localctx: InterfaceTypeExtensionContext = InterfaceTypeExtensionContext(_ctx, getState())
+		let _localctx: InterfaceTypeExtensionContext = InterfaceTypeExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 110, GraphQLParser.RULE_interfaceTypeExtension)
 		var _la: Int = 0
 		defer {
@@ -4411,7 +4409,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func unionTypeDefinition() throws -> UnionTypeDefinitionContext {
-		var _localctx: UnionTypeDefinitionContext = UnionTypeDefinitionContext(_ctx, getState())
+		let _localctx: UnionTypeDefinitionContext = UnionTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 112, GraphQLParser.RULE_unionTypeDefinition)
 		var _la: Int = 0
 		defer {
@@ -4509,7 +4507,6 @@ internal class GraphQLParser: Parser {
 		let _parentctx: ParserRuleContext? = _ctx
 		let _parentState: Int = getState()
 		var _localctx: UnionMemberTypesContext = UnionMemberTypesContext(_ctx, _parentState)
-		var _prevctx: UnionMemberTypesContext = _localctx
 		let _startState: Int = 114
 		try enterRecursionRule(_localctx, 114, GraphQLParser.RULE_unionMemberTypes, _p)
 		var _la: Int = 0
@@ -4546,7 +4543,6 @@ internal class GraphQLParser: Parser {
 					if _parseListeners != nil {
 					   try triggerExitRuleEvent()
 					}
-					_prevctx = _localctx
 					_localctx = UnionMemberTypesContext(_parentctx, _parentState);
 					try pushNewRecursionContext(_localctx, _startState, GraphQLParser.RULE_unionMemberTypes)
 					setState(568)
@@ -4615,7 +4611,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func unionTypeExtension() throws -> UnionTypeExtensionContext {
-		var _localctx: UnionTypeExtensionContext = UnionTypeExtensionContext(_ctx, getState())
+		let _localctx: UnionTypeExtensionContext = UnionTypeExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 116, GraphQLParser.RULE_unionTypeExtension)
 		var _la: Int = 0
 		defer {
@@ -4714,7 +4710,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func enumTypeDefinition() throws -> EnumTypeDefinitionContext {
-		var _localctx: EnumTypeDefinitionContext = EnumTypeDefinitionContext(_ctx, getState())
+		let _localctx: EnumTypeDefinitionContext = EnumTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 118, GraphQLParser.RULE_enumTypeDefinition)
 		var _la: Int = 0
 		defer {
@@ -4801,7 +4797,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func enumValuesDefinition() throws -> EnumValuesDefinitionContext {
-		var _localctx: EnumValuesDefinitionContext = EnumValuesDefinitionContext(_ctx, getState())
+		let _localctx: EnumValuesDefinitionContext = EnumValuesDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 120, GraphQLParser.RULE_enumValuesDefinition)
 		var _la: Int = 0
 		defer {
@@ -4875,7 +4871,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func enumValueDefinition() throws -> EnumValueDefinitionContext {
-		var _localctx: EnumValueDefinitionContext = EnumValueDefinitionContext(_ctx, getState())
+		let _localctx: EnumValueDefinitionContext = EnumValueDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 122, GraphQLParser.RULE_enumValueDefinition)
 		var _la: Int = 0
 		defer {
@@ -4962,7 +4958,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func enumTypeExtension() throws -> EnumTypeExtensionContext {
-		var _localctx: EnumTypeExtensionContext = EnumTypeExtensionContext(_ctx, getState())
+		let _localctx: EnumTypeExtensionContext = EnumTypeExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 124, GraphQLParser.RULE_enumTypeExtension)
 		var _la: Int = 0
 		defer {
@@ -5061,7 +5057,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func inputObjectTypeDefinition() throws -> InputObjectTypeDefinitionContext {
-		var _localctx: InputObjectTypeDefinitionContext = InputObjectTypeDefinitionContext(_ctx, getState())
+		let _localctx: InputObjectTypeDefinitionContext = InputObjectTypeDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 126, GraphQLParser.RULE_inputObjectTypeDefinition)
 		var _la: Int = 0
 		defer {
@@ -5148,7 +5144,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func inputFieldsDefinition() throws -> InputFieldsDefinitionContext {
-		var _localctx: InputFieldsDefinitionContext = InputFieldsDefinitionContext(_ctx, getState())
+		let _localctx: InputFieldsDefinitionContext = InputFieldsDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 128, GraphQLParser.RULE_inputFieldsDefinition)
 		var _la: Int = 0
 		defer {
@@ -5230,7 +5226,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func inputObjectTypeExtension() throws -> InputObjectTypeExtensionContext {
-		var _localctx: InputObjectTypeExtensionContext = InputObjectTypeExtensionContext(_ctx, getState())
+		let _localctx: InputObjectTypeExtensionContext = InputObjectTypeExtensionContext(_ctx, getState())
 		try enterRule(_localctx, 130, GraphQLParser.RULE_inputObjectTypeExtension)
 		var _la: Int = 0
 		defer {
@@ -5333,7 +5329,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func directiveDefinition() throws -> DirectiveDefinitionContext {
-		var _localctx: DirectiveDefinitionContext = DirectiveDefinitionContext(_ctx, getState())
+		let _localctx: DirectiveDefinitionContext = DirectiveDefinitionContext(_ctx, getState())
 		try enterRule(_localctx, 132, GraphQLParser.RULE_directiveDefinition)
 		var _la: Int = 0
 		defer {
@@ -5424,7 +5420,6 @@ internal class GraphQLParser: Parser {
 		let _parentctx: ParserRuleContext? = _ctx
 		let _parentState: Int = getState()
 		var _localctx: DirectiveLocationsContext = DirectiveLocationsContext(_ctx, _parentState)
-		var _prevctx: DirectiveLocationsContext = _localctx
 		let _startState: Int = 134
 		try enterRecursionRule(_localctx, 134, GraphQLParser.RULE_directiveLocations, _p)
 		var _la: Int = 0
@@ -5459,7 +5454,6 @@ internal class GraphQLParser: Parser {
 					if _parseListeners != nil {
 					   try triggerExitRuleEvent()
 					}
-					_prevctx = _localctx
 					_localctx = DirectiveLocationsContext(_parentctx, _parentState);
 					try pushNewRecursionContext(_localctx, _startState, GraphQLParser.RULE_directiveLocations)
 					setState(684)
@@ -5516,7 +5510,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func directiveLocation() throws -> DirectiveLocationContext {
-		var _localctx: DirectiveLocationContext = DirectiveLocationContext(_ctx, getState())
+		let _localctx: DirectiveLocationContext = DirectiveLocationContext(_ctx, getState())
 		try enterRule(_localctx, 136, GraphQLParser.RULE_directiveLocation)
 		defer {
 	    		try! exitRule()
@@ -5575,7 +5569,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func executableDirectiveLocation() throws -> ExecutableDirectiveLocationContext {
-		var _localctx: ExecutableDirectiveLocationContext = ExecutableDirectiveLocationContext(_ctx, getState())
+		let _localctx: ExecutableDirectiveLocationContext = ExecutableDirectiveLocationContext(_ctx, getState())
 		try enterRule(_localctx, 138, GraphQLParser.RULE_executableDirectiveLocation)
 		defer {
 	    		try! exitRule()
@@ -5619,7 +5613,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func typeSystemDirectiveLocation() throws -> TypeSystemDirectiveLocationContext {
-		var _localctx: TypeSystemDirectiveLocationContext = TypeSystemDirectiveLocationContext(_ctx, getState())
+		let _localctx: TypeSystemDirectiveLocationContext = TypeSystemDirectiveLocationContext(_ctx, getState())
 		try enterRule(_localctx, 140, GraphQLParser.RULE_typeSystemDirectiveLocation)
 		defer {
 	    		try! exitRule()
@@ -5679,7 +5673,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func name() throws -> NameContext {
-		var _localctx: NameContext = NameContext(_ctx, getState())
+		let _localctx: NameContext = NameContext(_ctx, getState())
 		try enterRule(_localctx, 142, GraphQLParser.RULE_name)
 		defer {
 	    		try! exitRule()
@@ -5839,7 +5833,7 @@ internal class GraphQLParser: Parser {
 	}
 	@discardableResult
 	 internal func nameBase() throws -> NameBaseContext {
-		var _localctx: NameBaseContext = NameBaseContext(_ctx, getState())
+		let _localctx: NameBaseContext = NameBaseContext(_ctx, getState())
 		try enterRule(_localctx, 144, GraphQLParser.RULE_nameBase)
 		var _la: Int = 0
 		defer {
