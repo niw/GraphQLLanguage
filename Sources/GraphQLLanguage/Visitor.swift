@@ -8,19 +8,19 @@
 public typealias Visitable = LanguageNode
 
 public protocol Visitor {
-    func visit(on visitable: Visitable)
+    func visit(on visitable: Visitable) throws
 }
 
 private struct BlockVisitor: Visitor {
     var block: (Visitable) -> Void
 
-    func visit(on visitable: Visitable) {
+    func visit(on visitable: Visitable) throws {
         block(visitable)
     }
 }
 
 extension Visitable {
-    public func visit(with visitor: Visitor) {
+    public func visit(with visitor: Visitor) throws {
         // Use reflection to depth-first traverse `Visitable`.
         let mirror = Mirror(reflecting: self)
 
@@ -41,24 +41,24 @@ extension Visitable {
             // These are known child field representation in each `Visitable`
             switch childValue {
             case let visitable as Visitable:
-                visitable.visit(with: visitor)
+                try visitable.visit(with: visitor)
             case let array as [Visitable]:
                 for visitable in array {
-                    visitable.visit(with: visitor)
+                    try visitable.visit(with: visitor)
                 }
             // See `ObjectValue`
             case let dictionary as [String: Visitable]:
                 for (_, visitable) in dictionary {
-                    visitable.visit(with: visitor)
+                    try visitable.visit(with: visitor)
                 }
             default:
                 break
             }
         }
-        visitor.visit(on: self)
+        try visitor.visit(on: self)
     }
 
-    public func visit(with visitor: @escaping (Visitable) -> Void) {
-        visit(with: BlockVisitor(block: visitor))
+    public func visit(with visitor: @escaping (Visitable) -> Void) throws {
+        try visit(with: BlockVisitor(block: visitor))
     }
 }

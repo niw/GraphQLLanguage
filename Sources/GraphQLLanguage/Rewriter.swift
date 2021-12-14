@@ -8,14 +8,14 @@
 public typealias Rewritable = Visitable
 
 public protocol Rewriter {
-    func rewrite(_ rewritable: Rewritable) -> String?
+    func rewrite(_ rewritable: Rewritable) throws -> String?
 }
 
 private struct BlockRewriter: Rewriter {
-    var block: (Rewritable) -> String?
+    var block: (Rewritable) throws -> String?
 
-    func rewrite(_ rewritable: Rewritable) -> String? {
-        block(rewritable)
+    func rewrite(_ rewritable: Rewritable) throws -> String? {
+        try block(rewritable)
     }
 }
 
@@ -38,12 +38,12 @@ private class RewritingVisitor: Visitor {
         self.rewriter = rewriter
     }
 
-    func visit(on visitable: Visitable) {
+    func visit(on visitable: Visitable) throws {
         guard let sourceRange = visitable.sourceRange else {
             return
         }
 
-        guard let rewritingString = rewriter.rewrite(visitable) else {
+        guard let rewritingString = try rewriter.rewrite(visitable) else {
             return
         }
 
@@ -65,7 +65,7 @@ extension Document {
         var unicodeScalars = source.unicodeScalars
 
         let rewritingVisitor = RewritingVisitor(rewriter: rewriter)
-        visit(with: rewritingVisitor)
+        try visit(with: rewritingVisitor)
 
         // Sort rewritings by each lower bounds.
         let rewritings = rewritingVisitor.rewritings.sorted { a, b in
@@ -89,7 +89,7 @@ extension Document {
         return String(unicodeScalars)
     }
 
-    public func rewrite(with rewriter: @escaping (Rewritable) -> String?) throws -> String {
+    public func rewrite(with rewriter: @escaping (Rewritable) throws -> String?) throws -> String {
         try rewrite(with: BlockRewriter(block: rewriter))
     }
 }

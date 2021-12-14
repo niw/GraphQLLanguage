@@ -14,7 +14,7 @@ final class VisitorTest: XCTestCase {
         let document = try Document.parsing(source)
 
         var visited: [Visitable] = []
-        document.visit { visitable in
+        try document.visit { visitable in
             visited.append(visitable)
         }
 
