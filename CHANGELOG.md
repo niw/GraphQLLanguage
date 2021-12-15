@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.3.0
+-----
+
+Update API for error handling.
+
+- Allow for rewriting operations to throw errors (#4)
+
 0.2.1
 -----
 
