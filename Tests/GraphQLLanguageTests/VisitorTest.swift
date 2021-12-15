@@ -29,4 +29,26 @@ final class VisitorTest: XCTestCase {
             "Document"
         ])
     }
+
+    func testThrowingVisitor() throws {
+        let source = Source(string: "type Cat")
+        let document = try Document.parsing(source)
+
+        enum Foo: Error {
+            case bar
+        }
+
+        do {
+            _ = try document.visit { _ in
+                throw Foo.bar
+            }
+            XCTFail("Expected exception")
+        }
+        catch Foo.bar {
+            // Pass
+        }
+        catch {
+            XCTFail("Expected Foo.bar, got \(error)")
+        }
+    }
 }

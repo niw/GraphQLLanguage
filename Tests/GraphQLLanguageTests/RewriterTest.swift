@@ -68,7 +68,7 @@ final class RewriterTest: XCTestCase {
         }
 
         do {
-            _ = try document.rewrite { rewritable in
+            _ = try document.rewrite { _ in
                 throw Foo.bar
             }
             XCTFail("Expected exception")

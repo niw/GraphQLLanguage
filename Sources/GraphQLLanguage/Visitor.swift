@@ -12,10 +12,10 @@ public protocol Visitor {
 }
 
 private struct BlockVisitor: Visitor {
-    var block: (Visitable) -> Void
+    var block: (Visitable) throws -> Void
 
     func visit(on visitable: Visitable) throws {
-        block(visitable)
+        try block(visitable)
     }
 }
 
@@ -58,7 +58,7 @@ extension Visitable {
         try visitor.visit(on: self)
     }
 
-    public func visit(with visitor: @escaping (Visitable) -> Void) throws {
+    public func visit(with visitor: @escaping (Visitable) throws -> Void) throws {
         try visit(with: BlockVisitor(block: visitor))
     }
 }
