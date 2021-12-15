@@ -14,7 +14,7 @@ final class VisitorTest: XCTestCase {
         let document = try Document.parsing(source)
 
         var visited: [Visitable] = []
-        document.visit { visitable in
+        try document.visit { visitable in
             visited.append(visitable)
         }
 
@@ -28,5 +28,27 @@ final class VisitorTest: XCTestCase {
             "OperationDefinition",
             "Document"
         ])
+    }
+
+    func testThrowingVisitor() throws {
+        let source = Source(string: "type Cat")
+        let document = try Document.parsing(source)
+
+        enum Foo: Error {
+            case bar
+        }
+
+        do {
+            _ = try document.visit { _ in
+                throw Foo.bar
+            }
+            XCTFail("Expected exception")
+        }
+        catch Foo.bar {
+            // Pass
+        }
+        catch {
+            XCTFail("Expected Foo.bar, got \(error)")
+        }
     }
 }

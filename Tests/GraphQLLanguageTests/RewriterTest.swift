@@ -58,4 +58,26 @@ final class RewriterTest: XCTestCase {
 
         XCTAssertEqual(result, "meow")
     }
+
+    func testThrowingRewriter() throws {
+        let source = Source(string: "type Cat")
+        let document = try Document.parsing(source)
+
+        enum Foo: Error {
+            case bar
+        }
+
+        do {
+            _ = try document.rewrite { _ in
+                throw Foo.bar
+            }
+            XCTFail("Expected exception")
+        }
+        catch Foo.bar {
+            // Pass
+        }
+        catch {
+            XCTFail("Expected Foo.bar, got \(error)")
+        }
+    }
 }
