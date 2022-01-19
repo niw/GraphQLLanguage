@@ -10,23 +10,38 @@ import Foundation
 
 enum BuildError: Error, CustomDebugStringConvertible {
     case unwrap
-    case unexpectedContext(_ context: ParserRuleContext)
+    case unexpectedContext(rule: String, line: Int?, position: Int?)
 
     // TODO: Improve error description
     var debugDescription: String {
         switch self {
         case .unwrap:
             return "Required field must not be nil. Probably a parser bug."
-        case .unexpectedContext(let context):
-            let rule = context.toStringTree(GraphQLParser.ruleNames)
-            if let token = context.getStart() {
-                let line = token.getLine()
-                let position = token.getCharPositionInLine()
-                return "Build error at: \(rule) line:\(line) position:\(position)"
-            } else {
-                return "Build error at: \(rule)"
-            }
+        case .unexpectedContext(let rule, .some(let line), .some(let position)):
+            return "Build error: \(rule) at line:\(line) position:\(position)"
+        case .unexpectedContext(let rule, _, _):
+            return "Build error: \(rule)"
         }
+    }
+
+    /// A `ParserRuleContext` is only valid so long as its associated `Document`
+    /// exists. Because of this caveat, the components relevant to the
+    /// `.unexpectedContext` error must be captured before the context is invalid.
+    ///
+    /// This convenience initializer will capture the relevant context properties and
+    /// populate an `.unexpectedContext` error with them.
+    ///
+    /// - Warning: If this method is called after the `context`'s `Document` is
+    /// released, the program will crash.
+    ///
+    /// - Returns: A `BuildError.unexpectedContext` constructed from
+    /// the given `ParserRuleContext`.
+    fileprivate static func unexpectedContext(from context: ParserRuleContext) -> BuildError {
+        let rule = context.toStringTree(GraphQLParser.ruleNames)
+        let token = context.getStart()
+        return .unexpectedContext(rule: rule,
+                                  line: token?.getLine(),
+                                  position: token?.getCharPositionInLine())
     }
 }
 
@@ -101,7 +116,7 @@ extension GraphQLParser.DefinitionContext: Builder {
         if let context = typeSystemExtension() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -113,7 +128,7 @@ extension GraphQLParser.ExecutableDefinitionContext: Builder {
         if let context = fragmentDefinition() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -139,7 +154,7 @@ extension GraphQLParser.OperationTypeContext: Builder {
         if SUBSCRIPTION() != nil {
             return .subscription
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -162,7 +177,7 @@ extension GraphQLParser.SelectionContext: Builder {
         if let context = inlineFragment() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -228,7 +243,7 @@ extension GraphQLParser.TypeConditionContext: Builder {
         if let context = namedType() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -270,7 +285,7 @@ extension GraphQLParser.ValueContext: Builder {
         if let context = objectValue() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -280,7 +295,7 @@ extension GraphQLParser.IntValueContext: Builder {
             return IntValue(context: languageContext(with: buildContext),
                             intValue: intValue)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -290,7 +305,7 @@ extension GraphQLParser.FloatValueContext: Builder {
             return FloatValue(context: languageContext(with: buildContext),
                               floatValue: floatValue)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -304,7 +319,7 @@ extension GraphQLParser.BooleanValueContext: Builder {
             return BooleanValue(context: languageContext(with: buildContext),
                                 booleanValue: false)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -368,21 +383,21 @@ extension GraphQLParser.StringValueContext: Builder {
         while let unicodeScalar = iterator.next() {
             if unicodeScalar == "\\" {
                 guard let unicodeScalar = iterator.next() else {
-                    throw BuildError.unexpectedContext(self)
+                    throw BuildError.unexpectedContext(from: self)
                 }
                 switch unicodeScalar {
                 case "u":
                     var hexUnicodeScalars = String.UnicodeScalarView()
                     for _ in 0..<4 {
                         guard let scalar = iterator.next() else {
-                            throw BuildError.unexpectedContext(self)
+                            throw BuildError.unexpectedContext(from: self)
                         }
                         hexUnicodeScalars.append(scalar)
                     }
                     let hexString = String(hexUnicodeScalars)
                     guard let hexValue = UInt32(hexString, radix: 16),
                           let unicodeScalar = UnicodeScalar(hexValue) else {
-                        throw BuildError.unexpectedContext(self)
+                        throw BuildError.unexpectedContext(from: self)
                     }
                     unescapedUnicodeScalars.append(unicodeScalar)
                 case "\"", "\\", "/":
@@ -398,7 +413,7 @@ extension GraphQLParser.StringValueContext: Builder {
                 case "t":
                     unescapedUnicodeScalars.append(UnicodeScalar(0x0009))
                 default:
-                    throw BuildError.unexpectedContext(self)
+                    throw BuildError.unexpectedContext(from: self)
                 }
             } else {
                 unescapedUnicodeScalars.append(unicodeScalar)
@@ -419,7 +434,7 @@ extension GraphQLParser.StringValueContext: Builder {
             return StringValue(context: languageContext(with: buildContext),
                                stringValue: stringValue)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -487,7 +502,7 @@ extension GraphQLParser.DefaultValueContext: Builder {
         if let context = value() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -502,7 +517,7 @@ extension GraphQLParser.TypeReferenceContext: Builder {
         if let context = nonNullType() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -530,7 +545,7 @@ extension GraphQLParser.NonNullTypeContext: Builder {
             return NonNullType(context: languageContext(with: buildContext),
                                typeReference: try context.build(with: buildContext))
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -561,7 +576,7 @@ extension GraphQLParser.TypeSystemDefinitionContext: Builder {
         if let context = directiveDefinition() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -573,7 +588,7 @@ extension GraphQLParser.TypeSystemExtensionContext: Builder {
         if let context = self.typeExtension() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -642,7 +657,7 @@ extension GraphQLParser.TypeDefinitionContext: Builder {
         if let context = inputObjectTypeDefinition() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -666,7 +681,7 @@ extension GraphQLParser.TypeExtensionContext: Builder {
         if let context = inputObjectTypeExtension() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -906,7 +921,7 @@ extension GraphQLParser.DirectiveLocationContext: Builder {
         if let context = typeSystemDirectiveLocation() {
             return try context.build(with: buildContext)
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -915,7 +930,7 @@ extension GraphQLParser.ExecutableDirectiveLocationContext: Builder {
         if let executableDirectiveLocation = ExecutableDirectiveLocation(rawValue: getText()) {
             return executableDirectiveLocation
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
@@ -924,7 +939,7 @@ extension GraphQLParser.TypeSystemDirectiveLocationContext: Builder {
         if let typeSystemDirectiveLocation = TypeSystemDirectiveLocation(rawValue: getText()) {
             return typeSystemDirectiveLocation
         }
-        throw BuildError.unexpectedContext(self)
+        throw BuildError.unexpectedContext(from: self)
     }
 }
 
