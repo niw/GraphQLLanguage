@@ -43,11 +43,9 @@ final class VisitorTest: XCTestCase {
                 throw Foo.bar
             }
             XCTFail("Expected exception")
-        }
-        catch Foo.bar {
+        } catch Foo.bar {
             // Pass
-        }
-        catch {
+        } catch {
             XCTFail("Expected Foo.bar, got \(error)")
         }
     }
