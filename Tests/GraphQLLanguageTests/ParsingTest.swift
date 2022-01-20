@@ -14,4 +14,10 @@ final class ParsingTest: XCTestCase {
 
         XCTAssertNoThrow(try Document.parsing(source))
     }
+
+    func testUnexpectedContext() {
+        let source = Source(string: "query { cat(age: \(Int(Int32.max) + 1)) }")
+
+        XCTAssertThrowsError(try Document.parsing(source))
+    }
 }
