@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.3.1
+-----
+
+Address crash problem and minor updates.
+
+- Crash when getting `BuildError.debugDescription` (#5)
+- Lint code.
+
 0.3.0
 -----
 
